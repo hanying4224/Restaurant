@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+
+
+        <LinearLayout
+            android:id="@+id/menu_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+            
+            <ExpandableListView
+                android:id="@+id/food_list"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:cacheColorHint="#00000000"
+                android:listSelector="#00000000">
+            </ExpandableListView>
+
+            <Button
+                android:id="@+id/btn_home"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/home_menu_home_icon"
+                android:gravity="left|center"
+                android:text="点餐"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btn_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/home_menu_order_list_icon"
+                android:gravity="left|center"
+                android:text="订单"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btn_pay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/home_menu_gift_icon"
+                android:gravity="left|center"
+                android:text="支付"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btn_amusement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/home_menu_invitation_icon"
+                android:gravity="left|center"
+                android:text="娱乐"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+</RelativeLayout>

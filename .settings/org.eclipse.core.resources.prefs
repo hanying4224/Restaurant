@@ -1,0 +1,13 @@
+eclipse.preferences.version=1
+encoding//src/com/tct/restaurant/activity/HomePageActivity.java=UTF-8
+encoding//src/com/tct/restaurant/activity/RestaurantDetailActivity.java=UTF-8
+encoding//src/com/tct/restaurant/activity/WelcomeActivity.java=UTF-8
+encoding//src/com/tct/restaurant/adapter/RestaurantDetailAdapter.java=UTF-8
+encoding//src/com/tct/restaurant/fragment/AboutsFragment.java=UTF-8
+encoding//src/com/tct/restaurant/fragment/PayFragment.java=UTF-8
+encoding//src/com/tct/restaurant/fragment/HomeFragment.java=UTF-8
+encoding//src/com/tct/restaurant/fragment/AmusementFragment.java=UTF-8
+encoding//src/com/tct/restaurant/fragment/MenuFragment.java=UTF-8
+encoding//src/com/tct/restaurant/fragment/OrderFragment.java=UTF-8
+encoding//src/com/tct/restaurant/image/ImageLoaderConfig.java=UTF-8
+encoding//src/com/tct/restaurant/util/Constants.java=UTF-8

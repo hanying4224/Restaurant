@@ -4,14 +4,35 @@ import java.io.Serializable;
 
 public class FoodEntity implements Serializable{
 
-	private static final long serialVersionUID = -6453430021123563721L;
-	public String image = "";
-	public String name= "";
-	public double price;
-	public String introduction= "";
-	public int sold_num;
+	@Override
+    public String toString() {
+        return "FoodEntity [image=" + image + ", name=" + name + ", price="
+                + price + ", introduction=" + introduction + ", sold_num="
+                + sold_num + ", category=" + category + ", ingredient="
+                + ingredient + "]";
+    }
+    private static final long serialVersionUID = -6453430021123563721L;
+	private String image = "";
+	private String name= "";
+	private double price;
+	private String introduction= "";
+	private int sold_num;
+	private String category;
+	private String ingredient;
+	public String getIngredient() {
+        return ingredient;
+    }
+    public void setIngredient(String ingredient) {
+        this.ingredient = ingredient;
+    }
     public String getImage() {
         return image;
+    }
+    public String getCategory() {
+        return category;
+    }
+    public void setCategory(String category) {
+        this.category = category;
     }
     public void setImage(String image) {
         this.image = image;

@@ -3,6 +3,8 @@ package com.tct;
 import android.app.Application;
 import android.content.res.Configuration;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.tct.restaurant.image.ImageLoaderConfig;
 import com.tct.restaurant.util.Constants;
 
@@ -10,9 +12,9 @@ import com.tct.restaurant.util.Constants;
 public class BaseApplication extends Application {
 	private String jumpType="";
 	private static BaseApplication instance;
+	public static RequestQueue queue;
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
-		// TODO Auto-generated method stub
 		super.onConfigurationChanged(newConfig);
 	}
 
@@ -21,7 +23,12 @@ public class BaseApplication extends Application {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		ImageLoaderConfig.initImageLoader(this, Constants.BASE_IMAGE_CACHE);
+		queue = Volley.newRequestQueue(getApplicationContext());
 	}
+
+	public static RequestQueue getHttpRequestQueue() {
+        return queue;
+    }
 
 	@Override
 	public void onLowMemory() {

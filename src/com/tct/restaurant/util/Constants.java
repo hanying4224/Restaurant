@@ -24,6 +24,20 @@ public class Constants {
 	// 缓存图片路径
 	public static final String BASE_IMAGE_CACHE = BASE_PATH + "cache/images/";
 
+	//HTTP 相关
+	public static final String SERVER_IP = "http://10.128.210.211/restaurant/Service1.asmx";
+	public static final String TABLE_QUERY = "/tableQuery";
+	public static final String NOEN_QUERY = "/noneQuery";
+	public static final String GET_PIC = "/getPic";
+
+	//Food Type
+	public static final String FOODTYPE_HOT = "热菜类";
+	public static final String FOODTYPE_COLD = "凉菜类";
+	public static final String FOODTYPE_SWEET = "甜点类";
+	public static final String FOODTYPE_SOUP = "汤类";
+	public static final String FOODTYPE_DRINKS = "饮料类";
+	public static final String FOODTYPE_STAPLE = "主食类";
+
 	/**
 	 ******************************************* 参数设置信息结束 ******************************************
 	 */

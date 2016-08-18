@@ -37,24 +37,30 @@ public class RequestUtils {
     }
 
     public final static List<FoodEntity> foodList = new ArrayList<FoodEntity>();
+    public final static List<FoodEntity> foodList_Current = new ArrayList<FoodEntity>();
     public static void requestFoodList(final String foodType, final Handler handler) {
         foodList.clear();
 
         String url= Constants.SERVER_IP + Constants.TABLE_QUERY;
         StringRequest request = new StringRequest(Method.POST, url,
                 new Listener<String>() {
-
                     @Override
                     public void onResponse(String response) {
 //                        Log.d("ying", "onResponse2, response = "+ response.toString());
-                        foodList.addAll(JSonParserUtils.parseFoodBycategory(response, foodType));
-                        Log.d("ying", "onResponse(FoodList): list.size() = "+ foodList.size());
+                        foodList.addAll(JSonParserUtils.parseFood(response));
+                        Log.d("ying", "requestFoodList: foodList.size() = " + foodList.size());
                         if (foodList.size() != 0) {
-                            handler.sendEmptyMessage(REQUEST_FOODLIST_OK);
+                            for (FoodEntity fEntity : foodList) {
+                                if (foodType.equals(fEntity.getCategory())) {
+                                    foodList_Current.add(fEntity);
+                                }
+                            }
+                            if (handler != null) {
+                                handler.sendEmptyMessage(REQUEST_FOODLIST_OK);
+                            }
                         }
                     }
                 }, new Response.ErrorListener() {
-
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("ying", "onErrorResponse2, error = " + error.toString());
@@ -69,5 +75,19 @@ public class RequestUtils {
             }
         };
         BaseApplication.getHttpRequestQueue().add(request);
+    }
+
+    public static void getFoodListByType(final String foodType, final Handler handler) {
+        foodList_Current.clear();
+        if (foodList.size() != 0) {
+            for (FoodEntity fEntity : foodList) {
+                if (foodType.equals(fEntity.getCategory())) {
+                    foodList_Current.add(fEntity);
+                }
+            }
+            handler.sendEmptyMessage(REQUEST_FOODLIST_OK);
+        } else {
+            requestFoodList(foodType, handler);
+        }
     }
 }

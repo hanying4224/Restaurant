@@ -25,10 +25,11 @@ public class Constants {
 	public static final String BASE_IMAGE_CACHE = BASE_PATH + "cache/images/";
 
 	//HTTP 相关
-	public static final String SERVER_IP = "http://10.128.210.211/restaurant/Service1.asmx";
+	private static String IP = "http://10.128.210.177";
+	public static final String SERVER_IP = IP + "/restaurant/Service1.asmx";
+	public static final String PIC_IP = IP + "/restaurant/pic/";
 	public static final String TABLE_QUERY = "/tableQuery";
 	public static final String NOEN_QUERY = "/noneQuery";
-	public static final String GET_PIC = "/getPic";
 
 	//Food Type
 	public static final String FOODTYPE_HOT = "热菜类";

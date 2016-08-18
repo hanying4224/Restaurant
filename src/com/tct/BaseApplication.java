@@ -7,6 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.tct.restaurant.image.ImageLoaderConfig;
 import com.tct.restaurant.util.Constants;
+import com.tct.restaurant.util.RequestUtils;
 
 
 public class BaseApplication extends Application {
@@ -24,6 +25,7 @@ public class BaseApplication extends Application {
 		super.onCreate();
 		ImageLoaderConfig.initImageLoader(this, Constants.BASE_IMAGE_CACHE);
 		queue = Volley.newRequestQueue(getApplicationContext());
+		RequestUtils.requestFoodList(Constants.FOODTYPE_HOT, null);
 	}
 
 	public static RequestQueue getHttpRequestQueue() {

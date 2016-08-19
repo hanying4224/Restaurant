@@ -81,7 +81,7 @@ public class RequestUtils {
         foodList_Current.clear();
         if (foodList.size() != 0) {
             for (FoodEntity fEntity : foodList) {
-                if (foodType.equals(fEntity.getCategory())) {
+                if (foodType!=null && foodType.equals(fEntity.getCategory())) {
                     foodList_Current.add(fEntity);
                 }
             }

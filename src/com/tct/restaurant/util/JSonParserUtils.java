@@ -20,6 +20,7 @@ public class JSonParserUtils {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jb = jsonArray.getJSONObject(i);
                 FoodEntity foodEntity = new FoodEntity();
+                foodEntity.setFID(jb.getInt("FID"));
                 foodEntity.setCategory(jb.getString("category"));
                 foodEntity.setImage(Constants.PIC_IP + jb.getString("picURL"));
                 foodEntity.setIntroduction(jb.getString("summary"));
@@ -27,6 +28,8 @@ public class JSonParserUtils {
                 foodEntity.setIngredient(jb.getString("ingredient"));
                 foodEntity.setPrice(jb.getDouble("price"));
                 foodEntity.setSold_num(jb.getInt("saleSum"));
+                foodEntity.setStars((float) jb.getDouble("stars"));
+                foodEntity.setEvaluation(jb.getString("evaluation"));
                 list.add(foodEntity);
             }
         } catch (JSONException e) {

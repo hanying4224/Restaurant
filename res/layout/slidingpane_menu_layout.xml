@@ -22,7 +22,7 @@
                 android:listSelector="#00000000">
             </ExpandableListView>
 
-            <Button
+            <!-- <Button
                 android:id="@+id/btn_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
                 android:drawableLeft="@drawable/home_menu_home_icon"
                 android:gravity="left|center"
                 android:text="点餐"
-                android:textSize="20sp" />
+                android:textSize="20sp" /> -->
 
             <Button
                 android:id="@+id/btn_order"

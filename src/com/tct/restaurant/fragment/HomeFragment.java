@@ -17,11 +17,13 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
@@ -33,21 +35,19 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tct.restaurant.R;
+import com.tct.restaurant.activity.FoodInfoActivity;
+import com.tct.restaurant.activity.WelcomeActivity;
 import com.tct.restaurant.entity.FoodEntity;
 import com.tct.restaurant.util.RequestUtils;
 
-@SuppressLint("NewApi")
+@SuppressLint({ "NewApi", "ValidFragment" })
 public class HomeFragment extends Fragment {
     private View currentView;
-//    private RefreshableListView mListView;
-//    private HomePageRestaurantAdapter adapter;
-//    private List<RestaurantEntity> mlist;
-//    private int total = 21;
-//    private int step = 7;
-//    private int add = 7;
-
     private GridView foodGridView = null;
+    private ImageView foodPicView = null;
     private List<FoodEntity> foodEntityList = new ArrayList<FoodEntity>();
+    private String mFoodType = "热菜类";
+    private GridViewAdapter gridAdapter = null;
 
     public void setCurrentViewPararms(FrameLayout.LayoutParams layoutParams) {
         currentView.setLayoutParams(layoutParams);
@@ -56,25 +56,44 @@ public class HomeFragment extends Fragment {
     public FrameLayout.LayoutParams getCurrentViewParams() {
         return (LayoutParams) currentView.getLayoutParams();
     }
-
+    
+    public HomeFragment() {
+        // TODO Auto-generated constructor stub
+    }
+    
+    public HomeFragment(String foodType) {
+        Log.i("hao", "HomeFragment foodType: "+foodType);
+        // TODO Auto-generated constructor stub
+        mFoodType = foodType;
+    }
+    
+    Handler mHandler = new Handler(){
+        public void handleMessage(android.os.Message msg) {
+            if (msg.what == RequestUtils.REQUEST_FOODLIST_OK) {
+                Log.i("hao", "handleMessage: "+RequestUtils.REQUEST_FOODLIST_OK);
+                foodEntityList = RequestUtils.foodList_Current;
+                gridAdapter.notifyDataSetChanged();
+                Log.i("hao", "handleMessage size: "+foodEntityList.size());
+            }
+        };
+    };
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        Log.i("hao", "HomeFragment onCreateView begin.. ");
         // TODO Auto-generated method stub
+        gridAdapter = new GridViewAdapter(getActivity());
         currentView = inflater.inflate(R.layout.slidingpane_home_layout,
                 container, false);
-        // mListView = (RefreshableListView) currentView
-        // .findViewById(R.id.mineList);
-        // getDate();
-        // setListener();
-        RequestUtils.getFoodListByType("热菜类", new Handler());
-        foodEntityList = RequestUtils.foodList_Current;
-        Log.i("hao", "foodEntityList.size: "+foodEntityList.size());
         foodGridView = (GridView) currentView.findViewById(R.id.grid_food);
         foodGridView.setNumColumns(3);
         foodGridView.setHorizontalSpacing(70);
         foodGridView.setVerticalSpacing(50);
-        foodGridView.setAdapter(new GridViewAdapter(foodEntityList, getActivity()));
+        foodGridView.setAdapter(gridAdapter);
+        RequestUtils.getFoodListByType(mFoodType, mHandler);
+        Log.i("hao", "foodEntityList.size: "+foodEntityList.size());
+        
         return currentView;
     }
 
@@ -82,7 +101,7 @@ public class HomeFragment extends Fragment {
 
         private Context c;
 
-        private List<FoodEntity> foodEntityList;
+//        private List<FoodEntity> foodEntityList;
         DisplayImageOptions options = new DisplayImageOptions.Builder() 
         .showStubImage(R.drawable.ic_launcher)          // 设置图片下载期间显示的图片 
         .showImageForEmptyUri(R.drawable.ic_launcher)  // 设置图片Uri为空或是错误的时候显示的图片 
@@ -90,10 +109,9 @@ public class HomeFragment extends Fragment {
         .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中 
         .cacheOnDisc(true)                          // 设置下载的图片是否缓存在SD卡中 
         .build();                                   // 创建配置过得DisplayImageOption对象
-/*        .displayer(new RoundedBitmapDisplayer(20))  // 设置成圆角图片 
-*/        public GridViewAdapter(List<FoodEntity> foodEntityList, Context c) {
+/*        .displayer(new RoundedBitmapDisplayer(20))  // 设置成圆角图片 */
+        public GridViewAdapter(Context c) {
             this.c = c;
-            this.foodEntityList = foodEntityList;
         }
 
         @Override
@@ -134,11 +152,20 @@ public class HomeFragment extends Fragment {
             Log.i("hao", ""+foodEntityList.get(arg0).getImage());
             vh.foodName.setText(foodEntityList.get(arg0).getName());
             vh.foodPrice.setText(foodEntityList.get(arg0).getPrice()+"元/份");
-            vh.foodSales.setText("Sales: "+foodEntityList.get(arg0).getSold_num());
-            vh.foodAddBt.setText("Score:"+"4.2分");
-            
-            
+            vh.foodSales.setText("销量: "+foodEntityList.get(arg0).getSold_num());
+            vh.foodAddBt.setText("评分:"+foodEntityList.get(arg0).getStars()+"分");
             ImageLoader.getInstance().displayImage(foodEntityList.get(arg0).getImage(), vh.foodPic, options/*, null*/);
+
+            vh.foodPic.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                    Intent foodInfoIntent = new Intent(c, FoodInfoActivity.class);
+                    startActivity(foodInfoIntent);
+                }
+            });
+
             return arg1;
         }
 

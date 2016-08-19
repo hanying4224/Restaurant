@@ -33,15 +33,24 @@ import android.widget.Toast;
 import com.tct.restaurant.R;
 import com.tct.restaurant.activity.HomePageActivity;
 import com.tct.restaurant.activity.LoginActivity;
+import com.tct.restaurant.util.Constants;
 
 @SuppressLint("NewApi")
 public class MenuFragment extends Fragment implements View.OnClickListener {
 
+    /*
+     * public static final String FOODTYPE_HOT = "热菜类";
+    public static final String FOODTYPE_COLD = "凉菜类";
+    public static final String FOODTYPE_SWEET = "甜点类";
+    public static final String FOODTYPE_SOUP = "汤类";
+    public static final String FOODTYPE_DRINKS = "饮料类";
+    public static final String FOODTYPE_STAPLE = "主食类";
+     * */
 	private View currentView;
-	private Button bt_gift, bt_home, bt_invitation, bt_orders, bt6;
+	private Button bt_gift, /*bt_home,*/ bt_invitation, bt_orders, bt6;
 	private String[] generalsTypes = new String[] { "点餐" };
 	private String[][] generals = new String[][] {
-            { "招牌", "热菜", "凉菜", "主食", "养生汤", "酒水" }
+            { Constants.FOODTYPE_SPECIAL, Constants.FOODTYPE_HOT, Constants.FOODTYPE_COLD, Constants.FOODTYPE_STAPLE, Constants.FOODTYPE_SOUP, Constants.FOODTYPE_DRINKS }
     };
 	private Context mContext;
 
@@ -56,11 +65,11 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
 		currentView = inflater.inflate(R.layout.slidingpane_menu_layout,
 				container, false);
 		bt_gift = (Button) currentView.findViewById(R.id.btn_pay);
-		bt_home = (Button) currentView.findViewById(R.id.btn_home);
+//		bt_home = (Button) currentView.findViewById(R.id.btn_home);
 		bt_invitation = (Button) currentView.findViewById(R.id.btn_amusement);
 		bt_orders = (Button) currentView.findViewById(R.id.btn_order);
 		bt_gift.setOnClickListener(this);
-		bt_home.setOnClickListener(this);
+//		bt_home.setOnClickListener(this);
 		bt_invitation.setOnClickListener(this);
 		bt_orders.setOnClickListener(this);
 		mContext = getActivity();
@@ -71,14 +80,18 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
 	}
 	
 	OnChildClickListener onChildClickListener =  new OnChildClickListener() {
-        
         @Override
         public boolean onChildClick(ExpandableListView parent, View v,
                 int groupPosition, int childPosition, long id) {
-            Toast.makeText(
+            FragmentTransaction ft = getFragmentManager().beginTransaction();// 开始一个事物
+            /*Toast.makeText(
                     mContext,
                     "你点击了" + adapter.getChild(groupPosition, childPosition),
-                    Toast.LENGTH_SHORT).show();
+                    Toast.LENGTH_SHORT).show();*/
+            Fragment homeFragment = new HomeFragment(adapter.getChild(groupPosition, childPosition).toString());
+            ft.replace(R.id.slidingpane_content, homeFragment);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
             return false;
         }
     };
@@ -164,12 +177,12 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
 		
 		FragmentTransaction ft = getFragmentManager().beginTransaction();// 开始一个事物
 		switch (v.getId()) {
-		case R.id.btn_home:
-			Fragment homeFragment = new HomeFragment();
+		/*case R.id.btn_home:
+			Fragment homeFragment = new HomeFragment("凉菜类");
 			ft.replace(R.id.slidingpane_content, homeFragment);
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			ft.commit();
-			break;
+			break;*/
 		case R.id.btn_order:
 			Fragment orderFragment = new OrderFragment();
 			ft.replace(R.id.slidingpane_content, orderFragment);

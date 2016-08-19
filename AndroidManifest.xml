@@ -49,6 +49,10 @@
             android:name="com.tct.restaurant.activity.LoginActivity"
             android:screenOrientation="landscape">
         </activity>
+        <activity
+            android:name="com.tct.restaurant.activity.FoodInfoActivity"
+            android:screenOrientation="landscape">
+        </activity>
     </application>
 
 </manifest>

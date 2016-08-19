@@ -9,32 +9,19 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.Request.Method;
+import com.android.volley.Response;
 import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.tct.BaseApplication;
 import com.tct.restaurant.R;
 import com.tct.restaurant.entity.FoodEntity;
+import com.tct.restaurant.entity.OrderItem;
 
 public class RequestUtils {
     public static final int REQUEST_FOODLIST_OK = 100;
-    public static List<FoodEntity> getFoodList() {
-        List<FoodEntity> list = new ArrayList<FoodEntity>();
-        FoodEntity fEntity;
-        for (int i = 0; i < 50; i++) {
-            fEntity = new FoodEntity();
-            fEntity.setImage("drawable://" + R.drawable.pic_hanbao2);
-            fEntity.setIntroduction("汉堡，西式快餐的领头羊，高热量... ...");
-            fEntity.setName("香辣汉堡");
-            fEntity.setPrice(23);
-            fEntity.setSold_num(36);
-            list.add(fEntity);
-            fEntity = null;
-        }
-        return list;
-    }
+    public static final int REQUEST_USERORDER_OK = 101;
 
     public final static List<FoodEntity> foodList = new ArrayList<FoodEntity>();
     public final static List<FoodEntity> foodList_Current = new ArrayList<FoodEntity>();
@@ -63,7 +50,7 @@ public class RequestUtils {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("ying", "onErrorResponse2, error = " + error.toString());
+                        Log.d("ying", "onErrorResponse(requestFoodList), error = " + error.toString());
                     }
                 }) {
             @Override
@@ -89,5 +76,40 @@ public class RequestUtils {
         } else {
             requestFoodList(foodType, handler);
         }
+    }
+
+    public final static List<OrderItem> userOrderList = new ArrayList<OrderItem>();
+    public static void getUserOrderList(final String userId, final Handler handler){
+        userOrderList.clear();
+
+        String url= Constants.SERVER_IP + Constants.TABLE_QUERY;
+        StringRequest request = new StringRequest(Method.POST, url,
+                new Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        userOrderList.addAll(JSonParserUtils.parseOrder(response));
+                        Log.d("ying", "getUserOrderList: userOrderList.size() = " + userOrderList.size());
+                        if (userOrderList.size() != 0) {
+                            if (handler != null) {
+                                handler.sendEmptyMessage(REQUEST_USERORDER_OK);
+                            }
+                            
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("ying", "onErrorResponse(getUserOrderList), error = " + error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams()
+                    throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("str", "select * from orderinfo where UID= "+ userId);
+                return map;
+            }
+        };
+        BaseApplication.getHttpRequestQueue().add(request);
     }
 }

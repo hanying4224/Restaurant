@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+   <ListView 
+       android:id="@+id/order_list"
+       android:layout_width="match_parent"
+       android:divider="@null"
+       android:layout_height="0dp"
+       android:layout_weight="9"
+       ></ListView>
+   <LinearLayout 
+       android:id="@+id/bottom1"
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:layout_weight="1"
+       android:orientation="horizontal"
+       >
+       <Button 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:background="@color/tct_green"
+           android:textColor="@color/tct_white"
+           android:text="已点菜"
+           />
+       <Button 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:background="@color/tct_yellow"
+           android:textColor="@color/tct_white"
+           android:text="下单"
+           />
+   </LinearLayout>
+   <LinearLayout 
+       android:id="@+id/bottom2"
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:layout_weight="1"
+       android:orientation="horizontal"
+       android:gravity="right"
+       >
+       <Button 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:background="@color/tct_yellow"
+           android:textColor="@color/tct_white"
+           android:text="结算"
+           />
+   </LinearLayout>
+
+</LinearLayout>

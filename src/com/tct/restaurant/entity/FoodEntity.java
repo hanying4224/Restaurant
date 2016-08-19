@@ -12,21 +12,21 @@ public class FoodEntity implements Serializable{
                 + ", evaluation=" + evaluation + ", ingredient=" + ingredient + "]";
     }
     private static final long serialVersionUID = -6453430021123563721L;
-    private int FID;
+    private String FID;
 	private String image = "";
 	private String name= "";
-	private double price;
+	private String price;
 	private String introduction= "";
-	private int sold_num;
+	private String sold_num;
 	private String category;
 	private String ingredient;
-	private float stars;
+	private String stars;
 	private String evaluation = "";
 
-	public int getFID() {
+	public String getFID() {
         return FID;
     }
-    public void setFID(int fID) {
+    public void setFID(String fID) {
         FID = fID;
     }
     public String getIngredient() {
@@ -53,10 +53,10 @@ public class FoodEntity implements Serializable{
     public void setName(String name) {
         this.name = name;
     }
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
     public String getIntroduction() {
@@ -65,16 +65,16 @@ public class FoodEntity implements Serializable{
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
     }
-    public int getSold_num() {
+    public String getSold_num() {
         return sold_num;
     }
-    public void setSold_num(int sold_num) {
+    public void setSold_num(String sold_num) {
         this.sold_num = sold_num;
     }
-    public float getStars() {
+    public String getStars() {
         return stars;
     }
-    public void setStars(float stars) {
+    public void setStars(String stars) {
         this.stars = stars;
     }
     public String getEvaluation() {

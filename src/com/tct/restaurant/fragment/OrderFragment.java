@@ -11,42 +11,49 @@
  */
 package com.tct.restaurant.fragment;
 
-import com.tct.restaurant.R;
-import com.tct.restaurant.adapter.RestaurantDetailAdapter;
-import com.tct.restaurant.util.InjectView;
-import com.tct.restaurant.util.Injector;
-import com.tct.restaurant.widget.stickylistheaders.StickyListHeadersListView;
+import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Fragment;
-import android.os.Build;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.FrameLayout.LayoutParams;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.tct.restaurant.R;
+import com.tct.restaurant.entity.OrderItem;
+import com.tct.restaurant.util.RequestUtils;
 
 @SuppressLint("NewApi")
-public class OrderFragment extends Fragment implements AdapterView.OnItemClickListener,
-        StickyListHeadersListView.OnHeaderClickListener,
-        StickyListHeadersListView.OnStickyHeaderOffsetChangedListener,
-        StickyListHeadersListView.OnStickyHeaderChangedListener {
+public class OrderFragment extends Fragment implements AdapterView.OnItemClickListener{
 	private View currentView;
+	private ListView listView;
+	private OrderAdapter adapter;
+	private Context mContext;
+
+	ArrayList<OrderItem> orderList = new ArrayList<OrderItem>();
 	
-
-	private RestaurantDetailAdapter mAdapter;
-    private boolean fadeHeader = true;
-    @InjectView(R.id.food_list_shipping_fee)
-    private TextView order_cart;
-    private StickyListHeadersListView stickyList;
-    
-
-
+	Handler mHandler = new Handler(){
+	    public void handleMessage(android.os.Message msg) {
+	        if (msg.what == RequestUtils.REQUEST_USERORDER_OK) {
+	            orderList.clear();
+	            orderList.addAll(RequestUtils.userOrderList);
+	            adapter.notifyDataSetChanged();
+            }
+	    };
+	};
+	
 	public void setCurrentViewPararms(FrameLayout.LayoutParams layoutParams) {
 		currentView.setLayoutParams(layoutParams);
 	}
@@ -58,80 +65,67 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-//		currentView = inflater.inflate(R.layout.slidingpane_order_layout,
-//				container, false);
-	    currentView = inflater.inflate(R.layout.restaurant_detail_main,
+	    currentView = inflater.inflate(R.layout.order_page,
               container, false);
-	    Injector.get(getActivity()).inject();//init views
-	    initView();
-        setListener();
+	    mContext = getActivity();
+	    listView = (ListView) currentView.findViewById(R.id.order_list);
+	    adapter = new OrderAdapter();
+	    listView.setAdapter(adapter);
+
+	    RequestUtils.getUserOrderList("1", mHandler);
 		return currentView;
 	}
-	
-	private void initView() {
-//      above_tittle.setText(restaurant_name);
-//      head_left.setImageResource(R.drawable.abc_ic_ab_back_holo_dark);
-        
-    }
-    
-    private void setListener() {
-        // TODO Auto-generated method stub
-//      above_toHome.setOnClickListener(new OnClickListener() {
-//          public void onClick(View v) {
-//              finish();
-//              
-//          }
-//      });
-        
-        mAdapter = new RestaurantDetailAdapter(getActivity(),order_cart);
-
-        stickyList = (StickyListHeadersListView) currentView.findViewById(R.id.list_restaurant_detail);
-        stickyList.setOnItemClickListener(this);
-        stickyList.setOnHeaderClickListener(this);
-        stickyList.setOnStickyHeaderChangedListener(this);
-        stickyList.setOnStickyHeaderOffsetChangedListener(this);
-//        stickyList.addHeaderView(getActivity().getLayoutInflater().inflate(
-//                R.layout.restaurant_list_header, null));
-//      stickyList.addFooterView(getLayoutInflater().inflate(
-//              R.layout.restaurant_list_footer, null));
-        stickyList.setDrawingListUnderStickyHeader(true);
-        stickyList.setAreHeadersSticky(true);
-        stickyList.setAdapter(mAdapter);
-
-//      stickyList.setStickyHeaderTopOffset(-20);
-        
-    }
 
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
-//        Toast.makeText(this, "Item " + position + " clicked!",
-//                Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onHeaderClick(StickyListHeadersListView l, View header,
-            int itemPosition, long headerId, boolean currentlySticky) {
-//        Toast.makeText(this,
-//                "Header " + headerId + " currentlySticky ? " + currentlySticky,
-//                Toast.LENGTH_SHORT).show();
-    }
+    class OrderAdapter extends BaseAdapter{
+        ViewHodler vHodler;
 
-    @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void onStickyHeaderOffsetChanged(StickyListHeadersListView l,
-            View header, int offset) {
-        if (fadeHeader
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            header.setAlpha(1 - (offset / (float) header.getMeasuredHeight()));
+        @Override
+        public int getCount() {
+            return orderList.size();
         }
-    }
 
-    @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void onStickyHeaderChanged(StickyListHeadersListView l, View header,
-            int itemPosition, long headerId) {
-        header.setAlpha(1);
+        @Override
+        public Object getItem(int position) {
+            return orderList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                vHodler = new ViewHodler();
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.order_list_item, null);
+                vHodler.imageV = (ImageView) convertView.findViewById(R.id.image);
+                vHodler.title = (TextView) convertView.findViewById(R.id.title);
+                vHodler.price = (TextView) convertView.findViewById(R.id.price);
+                vHodler.delButton = (Button) convertView.findViewById(R.id.delete_order);
+                vHodler.hurryButton = (Button) convertView.findViewById(R.id.hurryup_order);
+                convertView.setTag(vHodler);
+            } else {
+                vHodler = (ViewHodler) convertView.getTag();
+            }
+            vHodler.title.setText(orderList.get(position).getFoodEntity().getName());
+            vHodler.price.setText("¥" + orderList.get(position).getFoodEntity().getPrice());
+
+            ImageLoader.getInstance().displayImage(orderList.get(position).getFoodEntity().getImage(), vHodler.imageV);
+            return convertView;
+        }
+
+        class ViewHodler {
+            ImageView imageV;
+            TextView title;
+            TextView price;
+            Button delButton;
+            Button hurryButton;
+        }
     }
 
 }

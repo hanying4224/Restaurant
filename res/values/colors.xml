@@ -57,4 +57,14 @@
     <color name="default_circle_indicator_page_color">#00000000</color>
     <color name="default_circle_indicator_stroke_color">#ffdddddd</color>
     <color name="menu_section_header">#FFDDDDDD</color>
+
+    <color name="tct_yellow">#ffb028</color>
+    <color name="tct_black">#333333</color>
+    <color name="tct_gray">#969696</color>
+    <color name="tct_lightgray_text">#cccccc</color>
+    <color name="tct_darkyellow_text">#9e5f31</color>
+
+    <color name="tct_white">#ffffff</color>
+    <color name="tct_white_bg">#f6f6f6</color>
+    <color name="tct_green">#0ae137</color>
 </resources>

@@ -14,7 +14,7 @@ import com.tct.restaurant.util.InjectView;
 import com.tct.restaurant.util.Injector;
 
 public class WelcomeActivity extends Activity {
-	@InjectView(R.id.welcome_start_order)
+	@InjectView(R.id.start)
 	private TextView start;
 
 	@SuppressLint("NewApi")

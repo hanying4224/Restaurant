@@ -27,12 +27,20 @@
 
         <FrameLayout
             android:id="@+id/slidingpane_menu"
-            android:layout_width="100dp"
+            android:layout_width="@dimen/slidingpane_menu_width"
+            android:layout_height="match_parent" />
+
+        <View
+            android:layout_width="@dimen/slidingpane_empty_width"
             android:layout_height="match_parent" />
 
         <FrameLayout
             android:id="@+id/slidingpane_content"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/slidingpane_content_width"
+            android:layout_height="match_parent" />
+
+        <View
+            android:layout_width="@dimen/slidingpane_empty_width"
             android:layout_height="match_parent" />
     </android.support.v4.widget.SlidingPaneLayout>
 

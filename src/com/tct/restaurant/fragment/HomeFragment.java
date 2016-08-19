@@ -16,190 +16,169 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
-import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.widget.SlidingPaneLayout;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
-import android.widget.ImageButton;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tct.restaurant.R;
-import com.tct.restaurant.activity.DianPingWebActivity;
-import com.tct.restaurant.activity.RestaurantDetailActivity;
-import com.tct.restaurant.adapter.HomePageRestaurantAdapter;
-import com.tct.restaurant.entity.RestaurantEntity;
-import com.tct.restaurant.util.RefreshableListView;
-import com.tct.restaurant.util.RefreshableListView.OnRefreshListener;
+import com.tct.restaurant.entity.FoodEntity;
+import com.tct.restaurant.util.RequestUtils;
 
 @SuppressLint("NewApi")
 public class HomeFragment extends Fragment {
-	private View currentView;
-	private RefreshableListView mListView;
-	private HomePageRestaurantAdapter adapter;
-	private List<RestaurantEntity> mlist;
-	private int total = 21;
-	private int step = 7;
-	private int add = 7;
+    private View currentView;
+//    private RefreshableListView mListView;
+//    private HomePageRestaurantAdapter adapter;
+//    private List<RestaurantEntity> mlist;
+//    private int total = 21;
+//    private int step = 7;
+//    private int add = 7;
 
-	public void setCurrentViewPararms(FrameLayout.LayoutParams layoutParams) {
-		currentView.setLayoutParams(layoutParams);
-	}
+    private GridView foodGridView = null;
+    private List<FoodEntity> foodEntityList = new ArrayList<FoodEntity>();
 
-	public FrameLayout.LayoutParams getCurrentViewParams() {
-		return (LayoutParams) currentView.getLayoutParams();
-	}
+    public void setCurrentViewPararms(FrameLayout.LayoutParams layoutParams) {
+        currentView.setLayoutParams(layoutParams);
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		currentView = inflater.inflate(R.layout.slidingpane_home_layout,
-				container, false);
-		mListView = (RefreshableListView) currentView
-				.findViewById(R.id.mineList);
-		getDate();
-		setListener();
-		return currentView;
-	}
+    public FrameLayout.LayoutParams getCurrentViewParams() {
+        return (LayoutParams) currentView.getLayoutParams();
+    }
 
-	public void setListener() {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        currentView = inflater.inflate(R.layout.slidingpane_home_layout,
+                container, false);
+        // mListView = (RefreshableListView) currentView
+        // .findViewById(R.id.mineList);
+        // getDate();
+        // setListener();
+        RequestUtils.getFoodListByType("热菜类", new Handler());
+        foodEntityList = RequestUtils.foodList_Current;
+        Log.i("hao", "foodEntityList.size: "+foodEntityList.size());
+        foodGridView = (GridView) currentView.findViewById(R.id.grid_food);
+        foodGridView.setNumColumns(3);
+        foodGridView.setHorizontalSpacing(70);
+        foodGridView.setVerticalSpacing(50);
+        foodGridView.setAdapter(new GridViewAdapter(foodEntityList, getActivity()));
+        return currentView;
+    }
 
-		mListView.setOnRefreshListener(new OnRefreshListener() {
+    class GridViewAdapter extends BaseAdapter {
 
-			@Override
-			public void onRefresh(RefreshableListView listView) {
-				new NewDataTask().execute();
-			}
-		});
+        private Context c;
 
-		mListView.setOnItemClickListener(new OnItemClickListener() {
+        private List<FoodEntity> foodEntityList;
+        DisplayImageOptions options = new DisplayImageOptions.Builder() 
+        .showStubImage(R.drawable.ic_launcher)          // 设置图片下载期间显示的图片 
+        .showImageForEmptyUri(R.drawable.ic_launcher)  // 设置图片Uri为空或是错误的时候显示的图片 
+        .showImageOnFail(R.drawable.ic_launcher)       // 设置图片加载或解码过程中发生错误显示的图片     
+        .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中 
+        .cacheOnDisc(true)                          // 设置下载的图片是否缓存在SD卡中 
+        .build();                                   // 创建配置过得DisplayImageOption对象
+/*        .displayer(new RoundedBitmapDisplayer(20))  // 设置成圆角图片 
+*/        public GridViewAdapter(List<FoodEntity> foodEntityList, Context c) {
+            this.c = c;
+            this.foodEntityList = foodEntityList;
+        }
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-					long arg3) {
-				Intent intent = new Intent(getActivity(),
-						RestaurantDetailActivity.class);
-				intent.putExtra("name", mlist.get(position+1).getName());
-				startActivity(intent);
-			}
-		});
-	}
+        @Override
+        public int getCount() {
+            // TODO Auto-generated method stub
+            return foodEntityList.size();
+        }
 
-	private class NewDataTask extends AsyncTask<Void, Void, String> {
+        @Override
+        public Object getItem(int arg0) {
+            // TODO Auto-generated method stub
+            return foodEntityList.get(arg0);
+        }
 
-		@Override
-		protected String doInBackground(Void... params) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-			}
+        @Override
+        public long getItemId(int arg0) {
+            // TODO Auto-generated method stub
+            return arg0;
+        }
 
-			return null;
-		}
+        @Override
+        public View getView(int arg0, View arg1, ViewGroup arg2) {
+            // TODO Auto-generated method stub
+            ViewHodler vh;
+            if (arg1 == null) {
+                vh = new ViewHodler();
+                arg1 = LayoutInflater.from(c).inflate(R.layout.food_griditem,
+                        null);
+                vh.foodPic = (ImageView) arg1.findViewById(R.id.food_pic);
+                vh.foodName = (TextView) arg1.findViewById(R.id.food_name);
+                vh.foodPrice = (TextView) arg1.findViewById(R.id.food_price);
+                vh.foodSales = (TextView) arg1.findViewById(R.id.food_sales);
+                vh.foodAddBt = (TextView) arg1.findViewById(R.id.food_score);
+                arg1.setTag(vh);
+            } else {
+                vh = (ViewHodler) arg1.getTag();
+            }
+            Log.i("hao", ""+foodEntityList.get(arg0).getImage());
+            vh.foodName.setText(foodEntityList.get(arg0).getName());
+            vh.foodPrice.setText(foodEntityList.get(arg0).getPrice()+"元/份");
+            vh.foodSales.setText("Sales: "+foodEntityList.get(arg0).getSold_num());
+            vh.foodAddBt.setText("Score:"+"4.2分");
+            
+            
+            ImageLoader.getInstance().displayImage(foodEntityList.get(arg0).getImage(), vh.foodPic, options/*, null*/);
+            return arg1;
+        }
 
-		@Override
-		protected void onPostExecute(String result) {
-			int current = mListView.getAdapter().getCount();
-			if (current < total) {
-				add += step;
-				getDate();
-			}
+        class ViewHodler {
+            ImageView foodPic;
+            TextView foodName;
+            TextView foodSales;
+            TextView foodAddBt;
+            TextView foodPrice;
+        }
+        
+//        class ImageLoadingListenerImp implements ImageLoadingListener {
+//
+//            @Override
+//            public void onLoadingStarted(String imageUri, View view) {
+//                // TODO Auto-generated method stub
+//                
+//            }
+//
+//            @Override
+//            public void onLoadingFailed(String imageUri, View view,
+//                    FailReason failReason) {
+//                // TODO Auto-generated method stub
+//                
+//            }
+//
+//            @Override
+//            public void onLoadingComplete(String imageUri, View view,
+//                    Bitmap loadedImage) {
+//                // TODO Auto-generated method stub
+//                
+//            }
+//
+//            @Override
+//            public void onLoadingCancelled(String imageUri, View view) {
+//                // TODO Auto-generated method stub
+//                
+//            }
+//        }
 
-			mListView.completeRefreshing();
-
-			super.onPostExecute(result);
-		}
-	}
-
-	private void getDate() {
-
-		mlist = new ArrayList<RestaurantEntity>();
-		RestaurantEntity restaurant1 = new RestaurantEntity();
-		restaurant1.setLogo("drawable://" + R.drawable.pic_jigongbao);
-		restaurant1.setName("齐鲁兄弟鸡公煲");
-		restaurant1.setItem_msg("月售208单 / 20元起送 / 30分钟");
-		restaurant1.setRate_numbers(1);
-		restaurant1.setIs_rest(true);
-		restaurant1.setPromotion("指定食品，每份减4元");
-		restaurant1.setIs_half(true);
-		restaurant1.setIs_mins(true);
-		mlist.add(restaurant1);
-		restaurant1 = null;
-
-		RestaurantEntity restaurant2 = new RestaurantEntity();
-		restaurant2.setLogo("drawable://" + R.drawable.pic_jixiang);
-		restaurant2.setName("吉祥混沌");
-		restaurant2.setItem_msg("月售128单 / 14元起送 / 20分钟");
-		restaurant2.setPromotion("【新】下单立减3元，份份减3，加赠500ml康师傅果汁！");
-		restaurant2.setIs_mins(true);
-		restaurant2.setRate_numbers(2);
-		mlist.add(restaurant2);
-		restaurant2 = null;
-
-		RestaurantEntity restaurant3 = new RestaurantEntity();
-		restaurant3.setLogo("drawable://" + R.drawable.pic_milishi);
-		restaurant3.setName("迷离士汉堡");
-		restaurant3.setItem_msg("月售221单 / 12元起送 / 30分钟");
-		restaurant3.setIs_favor(true);
-		restaurant3.setRate_numbers(3);
-		restaurant3.setPromotion("【新】赠500ml康师傅果汁！");
-		restaurant3.setIs_half(true);
-		mlist.add(restaurant3);
-		restaurant3 = null;
-
-		RestaurantEntity restaurant4 = new RestaurantEntity();
-		restaurant4.setLogo("drawable://" + R.drawable.pic_shaxian);
-		restaurant4.setName("沙县小吃");
-		restaurant4.setItem_msg("月售218单 / 11元起送 / 10分钟");
-		restaurant4.setIs_rest(true);
-		restaurant4.setRate_numbers(4);
-		restaurant4.setPromotion("帅哥给你送餐！");
-		restaurant4.setIs_mins(true);
-		mlist.add(restaurant4);
-		restaurant4 = null;
-
-		RestaurantEntity restaurant5 = new RestaurantEntity();
-		restaurant5.setLogo("drawable://" + R.drawable.pic_shiguifan);
-		restaurant5.setName("韩式石锅饭");
-		restaurant5.setItem_msg("月售82单 / 14元起送 / 22分钟");
-		restaurant5.setIs_favor(true);
-		restaurant5.setRate_numbers(5);
-		restaurant5.setIs_mins(true);
-		mlist.add(restaurant5);
-		restaurant5 = null;
-
-		RestaurantEntity restaurant6 = new RestaurantEntity();
-		restaurant6.setLogo("drawable://" + R.drawable.pic_tengqi);
-		restaurant6.setName("藤崎寿司");
-		restaurant6.setItem_msg("月售34单 / 11元起送 / 10分钟");
-		restaurant6.setRate_numbers(2);
-		restaurant6.setIs_mins(true);
-		mlist.add(restaurant6);
-		restaurant6 = null;
-
-		RestaurantEntity restaurant7 = new RestaurantEntity();
-		restaurant7.setLogo("drawable://" + R.drawable.pic_xiaohongmao);
-		restaurant7.setName("小红帽快餐厅");
-		restaurant7.setItem_msg("月售233单 / 14元起送 / 20分钟");
-		restaurant7.setRate_numbers(3);
-		restaurant7.setIs_mins(true);
-		mlist.add(restaurant7);
-		restaurant7 = null;
-
-		adapter = new HomePageRestaurantAdapter(getActivity(), mlist);
-		mListView.setAdapter(adapter);
-	}
+    }
 
 }

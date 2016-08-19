@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:layout_height="match_parent">
+    <!-- android:background="@android:color/white"  -->
 
-<!--     <include -->
-<!--         android:id="@+id/home_head" -->
-<!--         layout="@layout/common_above_title_home" /> -->
+    <!-- <include -->
+    <!-- android:id="@+id/home_head" -->
+    <!-- layout="@layout/common_above_title_home" /> -->
 
     <com.tct.restaurant.util.RefreshableListView
         android:id="@+id/mineList"
@@ -18,6 +18,13 @@
         android:fadingEdgeLength="0.0sp"
         android:scrollbars="none" >
     </com.tct.restaurant.util.RefreshableListView>
-<!--         android:layout_below="@id/home_head" -->
+    <!-- android:layout_below="@id/home_head" -->
+
+    <GridView
+        android:id="@+id/grid_food"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="3" >
+    </GridView>
 
 </RelativeLayout>

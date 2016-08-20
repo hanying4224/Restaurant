@@ -34,27 +34,31 @@
 
         <LinearLayout
             android:id="@+id/main_left"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:gravity="center" >
 
-            <ImageView
+            <TextView
                 android:id="@+id/detail_food_type"
-                android:layout_width="80dp"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/detail_food_type" />
+                android:background="@drawable/detail_food_type"
+                android:gravity="center"
+                android:textSize="36sp"
+                android:singleLine="false"
+                />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/main_middle"
-            android:layout_width="400dp"
+            android:layout_width="380dp"
             android:layout_height="match_parent"
             android:gravity="center" >
 
             <ImageView
                 android:id="@+id/food_pic"
-                android:layout_width="400dp"
-                android:layout_height="400dp"
+                android:layout_width="380dp"
+                android:layout_height="380dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/pic_hanbao_md" />
         </LinearLayout>
@@ -63,6 +67,12 @@
             android:layout_width="20dp"
             android:layout_height="match_parent"/>
 
+        <!-- <include 
+            layout=""
+            android:layout_width="440dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical" > -->
         <LinearLayout
             android:id="@+id/main_right"
             android:layout_width="440dp"
@@ -87,44 +97,95 @@
                         android:layout_alignParentLeft="true"
                         android:text="红烧肉"
                         android:textColor="@color/tct_black"
-                        android:textSize="21.0sp" />
+                        android:textSize="25.0sp" />
 
                     <TextView
                         android:id="@+id/food_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginTop="1.5dp"
+                        android:gravity="center"
                         android:ellipsize="end"
                         android:text="38"
                         android:textColor="@color/tct_yellow"
-                        android:textSize="18.0sp" />
+                        android:textSize="25.0sp" />
                 </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/food_score"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1.5dp"
-                    android:ellipsize="end"
-                    android:text="score:4.5"
-                    android:textColor="@color/tct_darkyellow_text"
-                    android:textSize="18.0sp" />
+                <LinearLayout
+	                android:id="@+id/detail1"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content">
+	                <RatingBar
+	                    android:id="@+id/ratingBar"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    style="?android:attr/ratingBarStyleSmall"
+	                    android:numStars="5"
+	                    android:rating="4"/>
+	                <TextView
+	                    android:id="@+id/food_score"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginLeft="5dp"
+	                    android:layout_marginTop="1.5dp"
+	                    android:ellipsize="end"
+	                    android:text="4.5"
+	                    android:textColor="@color/tct_darkyellow_text"/>
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/detail2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp" >
-
+                android:layout_marginTop="15dp"
+                android:orientation="vertical" >
+                <LinearLayout
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="horizontal" >
+	                <TextView
+	                    android:id="@+id/food_introduction"
+	                    android:layout_width="80dp"
+	                    android:layout_height="wrap_content"
+	                    android:gravity="center"
+	                    android:text="介绍"
+	                    android:textStyle="bold"
+	                    android:textColor="@color/tct_black"
+	                    android:textSize="20.0sp" />
+	                <TextView
+	                    android:id="@+id/food_ingredient"
+	                    android:layout_width="80dp"
+	                    android:layout_height="wrap_content"
+	                    android:gravity="center"
+	                    android:text="材料"
+	                    android:textColor="@color/tct_gray"
+	                    android:textSize="20.0sp" />
+	            </LinearLayout>
+	            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+	                <View 
+	                    android:layout_width="80dp"
+                        android:layout_height="1dp"
+                        android:background="@color/tct_black"/>
+	                <View 
+                        android:layout_width="80dp"
+                        android:layout_height="1dp"
+                        android:background="@color/tct_gray"/>
+	                <View 
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/tct_gray"/>
+                </LinearLayout>
                 <TextView
                     android:id="@+id/food_info"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="105dp"
                     android:layout_marginTop="1.5dp"
+                    android:scrollbars="vertical"
                     android:text="info..."
-                    android:textColor="#ff494c5b"
+                    android:textColor="@color/tct_black"
                     android:textSize="18.0sp" />
             </LinearLayout>
 
@@ -143,13 +204,48 @@
                     android:textColor="#ff494c5b"
                     android:textSize="21.0sp" />
 
-                <TextView
-                    android:id="@+id/food_taste_choise"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="different choise..."
-                    android:textColor="#ff494c5b"
-                    android:textSize="18.0sp" />
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal" >
+                    <TextView
+	                    android:id="@+id/food_taste_peppery_no"
+	                    android:layout_width="80dp"
+	                    android:layout_height="wrap_content"
+	                    android:background="@drawable/text_field"
+	                    android:text="不辣"
+	                    android:gravity="center"
+	                    android:textColor="@color/tct_gray"
+	                    android:textSize="18.0sp" />
+                    <TextView
+	                    android:id="@+id/food_taste_peppery_little"
+	                    android:layout_width="80dp"
+	                    android:layout_height="wrap_content"
+	                    android:background="@drawable/text_field"
+	                    android:text="微辣"
+	                    android:gravity="center"
+	                    android:textColor="@color/tct_gray"
+	                    android:textSize="18.0sp" />
+                    <TextView
+	                    android:id="@+id/food_taste_peppery_middle"
+	                    android:layout_width="80dp"
+	                    android:layout_height="wrap_content"
+	                    android:background="@drawable/text_field"
+	                    android:text="中辣"
+	                    android:gravity="center"
+	                    android:textColor="@color/tct_gray"
+	                    android:textSize="18.0sp" />
+                    <TextView
+	                    android:id="@+id/food_taste_peppery_most"
+	                    android:layout_width="80dp"
+	                    android:layout_height="wrap_content"
+	                    android:background="@drawable/text_field"
+	                    android:text="辣"
+	                    android:gravity="center"
+	                    android:textColor="@color/tct_gray"
+	                    android:textSize="18.0sp" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -157,14 +253,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp" >
-
+                <TextView
+                    android:id="@+id/food_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="评论"
+                    android:textColor="@color/tct_black"
+                    android:textSize="20.0sp" />
                 <TextView
                     android:id="@+id/food_comment_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="comment..."
-                    android:textColor="#ff494c5b"
-                    android:textSize="18.0sp" />
+                    android:textColor="@color/tct_darkyellow_text"
+                    android:textSize="20.0sp" />
             </LinearLayout>
 
             <RelativeLayout

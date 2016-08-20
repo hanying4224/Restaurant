@@ -40,6 +40,9 @@ public class Constants {
 	public static final String FOODTYPE_DRINKS = "饮料类";
 	public static final String FOODTYPE_STAPLE = "主食类";
 
+	//User info
+	public static final String USER_ID = "1";
+
 	/**
 	 ******************************************* 参数设置信息结束 ******************************************
 	 */

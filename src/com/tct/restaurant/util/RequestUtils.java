@@ -5,7 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -119,5 +123,63 @@ public class RequestUtils {
         } else {
             requestOrderList(userId, handler);
         }
+    }
+
+    public static void insertAFoodToServerOrder(final FoodEntity fEntity) {
+        String url= Constants.SERVER_IP + Constants.NOEN_QUERY;
+        StringRequest request = new StringRequest(Method.POST, url,
+                new Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //更新订单
+                        requestOrderList(Constants.USER_ID, null);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("ying", "insertAFoodToServerOrder, error = " + error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams()
+                    throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                String sql = "insert into orderinfo (UID, FID, num) values ('"+Constants.USER_ID+"','"+fEntity.getFID()+"','1')";
+                Log.d("ying", "sql = "+ sql);
+                map.put("str", sql);
+                return map;
+            }
+        };
+        BaseApplication.getHttpRequestQueue().add(request);
+    }
+
+
+    public static void insertAFoodListToServerOrder(final List<OrderItem> fList) {
+        String url= Constants.SERVER_IP + Constants.NOEN_QUERY;
+        StringRequest request = new StringRequest(Method.POST, url,
+                new Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("ying", "insertAFoodListToServerOrder, error = " + error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams()
+                    throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                String sql = "";
+                for (OrderItem oEntity : fList) {
+                    sql += "insert into orderinfo (UID, FID, num) values ('"
+                            +Constants.USER_ID+"','"+oEntity.getFid()+"','"+oEntity.getNum()+"');";
+                }
+                map.put("str", sql);
+                return map;
+            }
+        };
+        BaseApplication.getHttpRequestQueue().add(request);
     }
 }

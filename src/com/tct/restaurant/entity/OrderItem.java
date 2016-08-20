@@ -34,6 +34,9 @@ public class OrderItem implements Serializable{
     public void setFid(String fid) {
         this.fid = fid;
     }
+    /**
+     * @return 0:订单已被处理、不可修改。 1：还可修改。 2：已上菜
+     */
     public String getStatus() {
         return status;
     }

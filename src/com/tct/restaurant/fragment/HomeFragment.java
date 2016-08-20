@@ -15,8 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -131,7 +134,7 @@ public class HomeFragment extends Fragment {
         }
 
         @Override
-        public View getView(int arg0, View arg1, ViewGroup arg2) {
+        public View getView(final int arg0, View arg1, ViewGroup arg2) {
             // TODO Auto-generated method stub
             ViewHodler vh;
             if (arg1 == null) {
@@ -172,7 +175,18 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
-                    Log.i("hao", "HomeFragment click add image.. ");
+                    Log.i("hao", "HomeFragment click add image..  position = "+ arg0);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(c);
+                    View view = LayoutInflater.from(c).inflate(R.layout.dialog_order_confirm, null);
+                    builder.setView(view);
+                    dialog = builder.create();
+                    dialog.setCanceledOnTouchOutside(false);
+                    Button okBtn = (Button) view.findViewById(R.id.ok);
+                    Button cancelBtn = (Button) view.findViewById(R.id.cancel);
+                    okBtn.setOnClickListener(listener);
+                    cancelBtn.setOnClickListener(listener);
+                    position = arg0;
+                    dialog.show();
                 }
             });
 
@@ -187,6 +201,28 @@ public class HomeFragment extends Fragment {
             TextView foodPrice;
             ImageView foodAddtoOrder;
         }
+
+        int position;
+        AlertDialog dialog;
+        OnClickListener listener = new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                case R.id.ok:
+                    Log.d("ying", "ok, position = "+ position);
+                    RequestUtils.insertAFoodToServerOrder(foodEntityList.get(position));
+                    dialog.cancel();
+                    break;
+                case R.id.cancel:
+                    dialog.cancel();
+                    break;
+
+                default:
+                    break;
+                }
+            }
+        };
 
 //        class ImageLoadingListenerImp implements ImageLoadingListener {
 //

@@ -18,6 +18,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tct.restaurant.R;
 import com.tct.restaurant.entity.OrderItem;
+import com.tct.restaurant.util.Constants;
 import com.tct.restaurant.util.RequestUtils;
 
 @SuppressLint("NewApi")
@@ -72,7 +74,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
 	    adapter = new OrderAdapter();
 	    listView.setAdapter(adapter);
 
-	    RequestUtils.getUserOrderList("1", mHandler);
+	    RequestUtils.getUserOrderList(Constants.USER_ID, mHandler);
 		return currentView;
 	}
 
@@ -106,8 +108,8 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                 vHodler.imageV = (ImageView) convertView.findViewById(R.id.image);
                 vHodler.title = (TextView) convertView.findViewById(R.id.title);
                 vHodler.price = (TextView) convertView.findViewById(R.id.price);
-                vHodler.delButton = (Button) convertView.findViewById(R.id.delete_order);
-                vHodler.hurryButton = (Button) convertView.findViewById(R.id.hurryup_order);
+//                vHodler.delButton = (Button) convertView.findViewById(R.id.delete_order);
+//                vHodler.hurryButton = (Button) convertView.findViewById(R.id.hurryup_order);
                 convertView.setTag(vHodler);
             } else {
                 vHodler = (ViewHodler) convertView.getTag();

@@ -41,10 +41,8 @@ public class JSonParserUtils {
     }
     
     public static List<OrderItem> parseOrder(String response) {
-        Log.d("ying", "response="+response);
         List<OrderItem> list = new ArrayList<OrderItem>();
         String jsonStr = response.substring(response.indexOf("["), response.lastIndexOf("]") + 1);
-        Log.d("ying", "jsonStr="+jsonStr);
         try {
             JSONArray jsonArray = new JSONArray(jsonStr);
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -55,6 +53,7 @@ public class JSonParserUtils {
                 orderItem.setRemark(jb.getString("remark"));
                 orderItem.setRemindNum(jb.getString("remindNum"));
                 orderItem.setStatus(jb.getString("statu"));
+                orderItem.setNum(jb.getString("num"));
                 FoodEntity fEntity;
                 for (int j = 0; j < RequestUtils.foodList.size(); j++) {
                     if (RequestUtils.foodList.get(j).getFID().equals(orderItem.getFid())) {

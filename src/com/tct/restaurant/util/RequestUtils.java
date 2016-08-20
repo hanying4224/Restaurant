@@ -79,7 +79,7 @@ public class RequestUtils {
     }
 
     public final static List<OrderItem> userOrderList = new ArrayList<OrderItem>();
-    public static void getUserOrderList(final String userId, final Handler handler){
+    public static void requestOrderList(final String userId, final Handler handler){
         userOrderList.clear();
 
         String url= Constants.SERVER_IP + Constants.TABLE_QUERY;
@@ -111,5 +111,13 @@ public class RequestUtils {
             }
         };
         BaseApplication.getHttpRequestQueue().add(request);
+    }
+
+    public static void getUserOrderList(final String userId, final Handler handler){
+        if (userOrderList.size() != 0) {
+            handler.sendEmptyMessage(REQUEST_USERORDER_OK);
+        } else {
+            requestOrderList(userId, handler);
+        }
     }
 }

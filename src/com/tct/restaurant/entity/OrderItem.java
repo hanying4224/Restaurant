@@ -15,6 +15,13 @@ public class OrderItem implements Serializable{
     private String lineOrder;
     private String remindNum;
     private FoodEntity foodEntity;
+    private String num;
+    public String getNum() {
+        return num;
+    }
+    public void setNum(String num) {
+        this.num = num;
+    }
     public FoodEntity getFoodEntity() {
         return foodEntity;
     }

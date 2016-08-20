@@ -85,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:textColor="#ff494c5b"
+            android:textColor="@color/tct_black"
             android:textSize="21.0sp" />
 
         <TextView
@@ -95,7 +95,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="1.5dp"
             android:ellipsize="end"
-            android:textColor="#ff494c5b"
+            android:textColor="@color/tct_yellow"
             android:textSize="18.0sp" />
     </RelativeLayout>
 

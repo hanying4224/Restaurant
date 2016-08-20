@@ -85,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:text="红烧肉"
-                        android:textColor="#ff494c5b"
+                        android:textColor="@color/tct_black"
                         android:textSize="21.0sp" />
 
                     <TextView
@@ -95,8 +95,8 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginTop="1.5dp"
                         android:ellipsize="end"
-                        android:text="38/份"
-                        android:textColor="#ff494c5b"
+                        android:text="38"
+                        android:textColor="@color/tct_yellow"
                         android:textSize="18.0sp" />
                 </RelativeLayout>
 
@@ -107,7 +107,7 @@
                     android:layout_marginTop="1.5dp"
                     android:ellipsize="end"
                     android:text="score:4.5"
-                    android:textColor="#ff494c5b"
+                    android:textColor="@color/tct_darkyellow_text"
                     android:textSize="18.0sp" />
             </LinearLayout>
 
@@ -138,7 +138,7 @@
                     android:id="@+id/food_taste"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="taste"
+                    android:text="口味"
                     android:textColor="#ff494c5b"
                     android:textSize="21.0sp" />
 
@@ -172,21 +172,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp" >
 
-                <TextView
-                    android:id="@+id/food_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="num:1"
-                    android:textColor="#ff494c5b"
-                    android:textSize="21.0sp" />
+                <include
+                    layout="@layout/plus_reduce_layout"
+                    android:layout_alignParentLeft="true" />
 
                 <Button
                     android:id="@+id/food_add_to_cart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="80dp"
+                    android:layout_height="35dp"
                     android:layout_alignParentRight="true"
-                    android:text="add"
+                    android:background="@color/tct_yellow"
+                    android:text="添加"
+                    android:textColor="@color/tct_white"
                     android:textSize="18.0sp" />
             </RelativeLayout>
         </LinearLayout>
@@ -204,8 +201,8 @@
                 android:id="@+id/test"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="add"
+                android:background="@color/tct_yellow"
+                android:text="添加"
                 android:textSize="18.0sp" />
         </LinearLayout>
         

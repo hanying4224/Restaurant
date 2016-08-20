@@ -44,7 +44,6 @@ import com.tct.restaurant.util.RequestUtils;
 public class HomeFragment extends Fragment {
     private View currentView;
     private GridView foodGridView = null;
-    private ImageView foodPicView = null;
     private List<FoodEntity> foodEntityList = new ArrayList<FoodEntity>();
     private String mFoodType = "热菜类";
     private GridViewAdapter gridAdapter = null;
@@ -100,7 +99,7 @@ public class HomeFragment extends Fragment {
     class GridViewAdapter extends BaseAdapter {
 
         private Context c;
-
+        private FoodEntity foodEntity= null;
 //        private List<FoodEntity> foodEntityList;
         DisplayImageOptions options = new DisplayImageOptions.Builder() 
         .showStubImage(R.drawable.ic_launcher)          // 设置图片下载期间显示的图片 
@@ -149,19 +148,23 @@ public class HomeFragment extends Fragment {
             } else {
                 vh = (ViewHodler) arg1.getTag();
             }
-            Log.i("hao", ""+foodEntityList.get(arg0).getImage());
-            vh.foodName.setText(foodEntityList.get(arg0).getName());
-            vh.foodPrice.setText(foodEntityList.get(arg0).getPrice()+"元/份");
-            vh.foodSales.setText("销量: "+foodEntityList.get(arg0).getSold_num());
-            vh.foodAddBt.setText("评分:"+foodEntityList.get(arg0).getStars()+"分");
-            ImageLoader.getInstance().displayImage(foodEntityList.get(arg0).getImage(), vh.foodPic, options/*, null*/);
+            foodEntity = foodEntityList.get(arg0);
+            Log.i("hao", foodEntity.getName()+" "+foodEntity.getFID());
+            vh.foodName.setText(foodEntity.getName());
+            vh.foodPrice.setText(foodEntity.getPrice()+"元/份");
+            vh.foodSales.setText("销量: "+foodEntity.getSold_num());
+            vh.foodAddBt.setText("评分:"+foodEntity.getStars()+"分");
+            ImageLoader.getInstance().displayImage(foodEntity.getImage(), vh.foodPic, options/*, null*/);
+            vh.foodPic.setTag(foodEntity.getFID());
 
             vh.foodPic.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
+                    final String id = v.getTag().toString();
                     Intent foodInfoIntent = new Intent(c, FoodInfoActivity.class);
+                    foodInfoIntent.putExtra("fid", id+"");
                     startActivity(foodInfoIntent);
                 }
             });

@@ -35,7 +35,7 @@ public class OrderItem implements Serializable{
         this.fid = fid;
     }
     /**
-     * @return 0:订单已被处理、不可修改。 1：还可修改。 2：已上菜
+     * @return 0:订单已被处理、不可修改。 1：还可修改。 2：已上菜。 3：订单还在购物车里
      */
     public String getStatus() {
         return status;

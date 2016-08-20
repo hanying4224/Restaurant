@@ -8,6 +8,8 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -125,7 +127,7 @@ public class RequestUtils {
         }
     }
 
-    public static void insertAFoodToServerOrder(final FoodEntity fEntity) {
+    public static void insertAFoodToServerOrder(final FoodEntity fEntity, final Context context) {
         String url= Constants.SERVER_IP + Constants.NOEN_QUERY;
         StringRequest request = new StringRequest(Method.POST, url,
                 new Listener<String>() {
@@ -133,6 +135,12 @@ public class RequestUtils {
                     public void onResponse(String response) {
                         //更新订单
                         requestOrderList(Constants.USER_ID, null);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                context.sendBroadcast(new Intent("tct.restaurant.updateorder"));
+                            }
+                        }, 3000);
                     }
                 }, new Response.ErrorListener() {
                     @Override

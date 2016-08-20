@@ -15,7 +15,10 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -75,8 +78,24 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
 	    listView.setAdapter(adapter);
 
 	    RequestUtils.getUserOrderList(Constants.USER_ID, mHandler);
+
+	    IntentFilter filter = new IntentFilter("tct.restaurant.updateorder");
+	    mContext.registerReceiver(receiver, filter);
 		return currentView;
 	}
+	
+	public void onDestroyView() {
+	    super.onDestroyView();
+	    mContext.unregisterReceiver(receiver);
+	};
+	
+	BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            RequestUtils.userOrderList.clear();
+            RequestUtils.getUserOrderList(Constants.USER_ID, mHandler);
+        }
+    };
 
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {

@@ -211,7 +211,7 @@ public class HomeFragment extends Fragment {
                 switch (v.getId()) {
                 case R.id.ok:
                     Log.d("ying", "ok, position = "+ position);
-                    RequestUtils.insertAFoodToServerOrder(foodEntityList.get(position));
+                    RequestUtils.insertAFoodToServerOrder(foodEntityList.get(position), c);
                     dialog.cancel();
                     break;
                 case R.id.cancel:

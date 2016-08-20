@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ public class FoodInfoActivity extends Activity {
     private TextView foodEvaluation;
     private TextView foodIntroduction;
     private ImageView foodPicView;
+    private Button foodAddBt;
     private String mFid = "";
     private FoodEntity mFoodEntity;
     public  List<FoodEntity> foodList_Current = new ArrayList<FoodEntity>();
@@ -47,7 +49,7 @@ public class FoodInfoActivity extends Activity {
 
         mFid = getIntent().getStringExtra("fid");
         Log.i("hao", "" + mFid);
-        
+
         foodName = (TextView) findViewById(R.id.food_name);
         foodPrice = (TextView) findViewById(R.id.food_price);
         foodScore = (TextView) findViewById(R.id.food_score);
@@ -55,16 +57,25 @@ public class FoodInfoActivity extends Activity {
         foodIntroduction = (TextView) findViewById(R.id.food_info);
         foodPicView = (ImageView) findViewById(R.id.food_pic);
         foodEvaluation.setOnClickListener(new OnClickListener() {
-            
+
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 
             }
         });
+        foodAddBt = (Button) findViewById(R.id.food_add_to_cart);
+        foodAddBt.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Log.i("hao", "HomeFragment click add to cart bt.. ");
+            }
+        });
         init();
     }
-    
+
     DisplayImageOptions options = new DisplayImageOptions.Builder() 
         .showStubImage(R.drawable.ic_launcher)          // 设置图片下载期间显示的图片 
         .showImageForEmptyUri(R.drawable.ic_launcher)  // 设置图片Uri为空或是错误的时候显示的图片 
@@ -72,7 +83,7 @@ public class FoodInfoActivity extends Activity {
         .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中 
         .cacheOnDisc(true)                          // 设置下载的图片是否缓存在SD卡中 
         .build();                                   // 创建配置过得DisplayImageOption对象
-    
+
     private void init() {
         // TODO Auto-generated method stub
         foodList_Current = RequestUtils.foodList_Current;

@@ -88,11 +88,10 @@ public class HomeFragment extends Fragment {
         foodGridView = (GridView) currentView.findViewById(R.id.grid_food);
         foodGridView.setNumColumns(3);
         foodGridView.setHorizontalSpacing(70);
-        foodGridView.setVerticalSpacing(50);
+        foodGridView.setVerticalSpacing(30);//50
         foodGridView.setAdapter(gridAdapter);
         RequestUtils.getFoodListByType(mFoodType, mHandler);
         Log.i("hao", "foodEntityList.size: "+foodEntityList.size());
-        
         return currentView;
     }
 
@@ -102,12 +101,12 @@ public class HomeFragment extends Fragment {
         private FoodEntity foodEntity= null;
 //        private List<FoodEntity> foodEntityList;
         DisplayImageOptions options = new DisplayImageOptions.Builder() 
-        .showStubImage(R.drawable.ic_launcher)          // 设置图片下载期间显示的图片 
-        .showImageForEmptyUri(R.drawable.ic_launcher)  // 设置图片Uri为空或是错误的时候显示的图片 
-        .showImageOnFail(R.drawable.ic_launcher)       // 设置图片加载或解码过程中发生错误显示的图片     
-        .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中 
-        .cacheOnDisc(true)                          // 设置下载的图片是否缓存在SD卡中 
-        .build();                                   // 创建配置过得DisplayImageOption对象
+            .showStubImage(R.drawable.ic_launcher)          // 设置图片下载期间显示的图片
+            .showImageForEmptyUri(R.drawable.ic_launcher)  // 设置图片Uri为空或是错误的时候显示的图片
+            .showImageOnFail(R.drawable.ic_launcher)       // 设置图片加载或解码过程中发生错误显示的图片
+            .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中
+            .cacheOnDisc(true)                          // 设置下载的图片是否缓存在SD卡中
+            .build();                                   // 创建配置过得DisplayImageOption对象
 /*        .displayer(new RoundedBitmapDisplayer(20))  // 设置成圆角图片 */
         public GridViewAdapter(Context c) {
             this.c = c;
@@ -143,7 +142,8 @@ public class HomeFragment extends Fragment {
                 vh.foodName = (TextView) arg1.findViewById(R.id.food_name);
                 vh.foodPrice = (TextView) arg1.findViewById(R.id.food_price);
                 vh.foodSales = (TextView) arg1.findViewById(R.id.food_sales);
-                vh.foodAddBt = (TextView) arg1.findViewById(R.id.food_score);
+                vh.foodScore = (TextView) arg1.findViewById(R.id.food_score);
+                vh.foodAddtoOrder = (ImageView) arg1.findViewById(R.id.food_addpic);
                 arg1.setTag(vh);
             } else {
                 vh = (ViewHodler) arg1.getTag();
@@ -153,10 +153,9 @@ public class HomeFragment extends Fragment {
             vh.foodName.setText(foodEntity.getName());
             vh.foodPrice.setText(foodEntity.getPrice()+"元/份");
             vh.foodSales.setText("销量: "+foodEntity.getSold_num());
-            vh.foodAddBt.setText("评分:"+foodEntity.getStars()+"分");
+            vh.foodScore.setText("评分:"+foodEntity.getStars()+"分");
             ImageLoader.getInstance().displayImage(foodEntity.getImage(), vh.foodPic, options/*, null*/);
             vh.foodPic.setTag(foodEntity.getFID());
-
             vh.foodPic.setOnClickListener(new OnClickListener() {
 
                 @Override
@@ -168,6 +167,14 @@ public class HomeFragment extends Fragment {
                     startActivity(foodInfoIntent);
                 }
             });
+            vh.foodAddtoOrder.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                    Log.i("hao", "HomeFragment click add image.. ");
+                }
+            });
 
             return arg1;
         }
@@ -176,10 +183,11 @@ public class HomeFragment extends Fragment {
             ImageView foodPic;
             TextView foodName;
             TextView foodSales;
-            TextView foodAddBt;
+            TextView foodScore;
             TextView foodPrice;
+            ImageView foodAddtoOrder;
         }
-        
+
 //        class ImageLoadingListenerImp implements ImageLoadingListener {
 //
 //            @Override

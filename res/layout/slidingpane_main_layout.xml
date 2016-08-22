@@ -18,12 +18,18 @@
     </RelativeLayout> -->
 
     <include layout="@layout/top_panel"/>
-
+    
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="60dp"
+        android:background="@color/tct_lightgray_text"/>
+    
     <android.support.v4.widget.SlidingPaneLayout
         android:id="@+id/slidingpanellayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="61dp"
         android:background="@android:color/transparent" >
 
         <FrameLayout

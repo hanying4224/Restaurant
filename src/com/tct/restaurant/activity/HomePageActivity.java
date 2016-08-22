@@ -4,13 +4,18 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
+import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.tct.restaurant.R;
 import com.tct.restaurant.fragment.HomeFragment;
@@ -23,6 +28,7 @@ public class HomePageActivity extends Activity {
 	private SlidingPaneLayout slidingPaneLayout;
 	private MenuFragment menuFragment;
 	private HomeFragment contentFragment;
+	private TextView timeView;
 	private DisplayMetrics displayMetrics = new DisplayMetrics();
 	private int maxMargin = 0;
 
@@ -35,6 +41,8 @@ public class HomePageActivity extends Activity {
 		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		setContentView(R.layout.slidingpane_main_layout);
 		Injector.get(this).inject();//init views
+		timeView = (TextView) findViewById(R.id.top_panel_time);
+		new TimeThread().start();
 		menuFragment = new MenuFragment();
 		contentFragment = new HomeFragment();
 		FragmentTransaction transaction = getFragmentManager()
@@ -86,5 +94,33 @@ public class HomePageActivity extends Activity {
 	public SlidingPaneLayout getSlidingPaneLayout() {
 		return slidingPaneLayout;
 	}
-
+	private int TIMEUPDATE = 100;
+	class TimeThread extends Thread{
+	    @Override
+	    public void run() {
+	        // TODO Auto-generated method stub
+	        do {
+                try {
+                    Thread.sleep(1000);
+                    Message msg = new Message();
+                    msg.what = TIMEUPDATE;
+                    mHandler.sendMessage(msg);
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } while(true);
+        }
+	}
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage (Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == TIMEUPDATE) {
+                long sysTime = System.currentTimeMillis();
+                CharSequence sysTimeStr = DateFormat.format("hh:mm", sysTime);
+                timeView.setText(sysTimeStr);
+            }
+        }
+    };
 }

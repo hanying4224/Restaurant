@@ -20,6 +20,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -50,6 +51,12 @@ public class HomeFragment extends Fragment {
     private List<FoodEntity> foodEntityList = new ArrayList<FoodEntity>();
     private String mFoodType = "热菜类";
     private GridViewAdapter gridAdapter = null;
+    private View sortBySales;
+    private View sortByScore;
+    private TextView sortBySalesTextView;
+    private TextView sortByScoreTextView;
+    private Drawable drawableWhite;
+    private Drawable drawableBlack;
 
     public void setCurrentViewPararms(FrameLayout.LayoutParams layoutParams) {
         currentView.setLayoutParams(layoutParams);
@@ -90,16 +97,54 @@ public class HomeFragment extends Fragment {
                 container, false);
         TextView foodtype = (TextView) currentView.findViewById(R.id.foodmenutype);
         foodtype.setText(mFoodType);
+        sortBySales = currentView.findViewById(R.id.foodsales);
+        sortBySales.setOnClickListener(mClickListener);
+        sortByScore = currentView.findViewById(R.id.foodscore);
+        sortByScore.setOnClickListener(mClickListener);
+        sortBySalesTextView = (TextView) currentView.findViewById(R.id.foodsales_text);
+        sortByScoreTextView = (TextView) currentView.findViewById(R.id.foodscore_text);
+        drawableWhite = getResources().getDrawable(R.drawable.rank_white);
+        drawableWhite.setBounds(0, 0, drawableWhite.getMinimumWidth(), drawableWhite.getMinimumHeight());
+        drawableBlack = getResources().getDrawable(R.drawable.rank_black);
+        drawableBlack.setBounds(0, 0, drawableBlack.getMinimumWidth(), drawableBlack.getMinimumHeight());
+        
         foodGridView = (GridView) currentView.findViewById(R.id.grid_food);
         foodGridView.setNumColumns(3);
         foodGridView.setHorizontalSpacing(70);
-        foodGridView.setVerticalSpacing(30);//50
+        foodGridView.setVerticalSpacing(30);
         foodGridView.setAdapter(gridAdapter);
         RequestUtils.getFoodListByType(mFoodType, mHandler);
         Log.i("hao", "foodEntityList.size: "+foodEntityList.size());
         return currentView;
     }
 
+    OnClickListener mClickListener = new OnClickListener() {
+        
+        @Override
+        public void onClick(View v) {
+            // TODO Auto-generated method stub
+            switch (v.getId()) {
+            case R.id.foodsales:
+                sortBySales.setBackgroundColor(getResources().getColor(R.color.tct_yellow));
+                sortByScore.setBackgroundColor(getResources().getColor(R.color.tct_white));
+                sortBySalesTextView.setTextColor(getResources().getColor(R.color.tct_white));
+                sortBySalesTextView.setCompoundDrawables(null, null, drawableWhite, null);
+                sortByScoreTextView.setTextColor(getResources().getColor(R.color.tct_black));
+                sortByScoreTextView.setCompoundDrawables(null, null, drawableBlack, null);
+                break;
+            case R.id.foodscore:
+                sortBySales.setBackgroundColor(getResources().getColor(R.color.tct_white));
+                sortByScore.setBackgroundColor(getResources().getColor(R.color.tct_yellow));
+                sortByScoreTextView.setTextColor(getResources().getColor(R.color.tct_white));
+                sortByScoreTextView.setCompoundDrawables(null, null, drawableWhite, null);
+                sortBySalesTextView.setTextColor(getResources().getColor(R.color.tct_black));
+                sortBySalesTextView.setCompoundDrawables(null, null, drawableBlack, null);
+                break;
+            default:
+                break;
+            }
+        }
+    };
     class GridViewAdapter extends BaseAdapter {
 
         private Context c;
@@ -157,8 +202,8 @@ public class HomeFragment extends Fragment {
             Log.i("hao", foodEntity.getName()+" "+foodEntity.getFID());
             vh.foodName.setText(foodEntity.getName());
             vh.foodPrice.setText(foodEntity.getPrice()+"元/份");
-            vh.foodSales.setText("销量: "+foodEntity.getSold_num());
-            vh.foodScore.setText("评分:"+foodEntity.getStars()+"分");
+            vh.foodSales.setText(foodEntity.getSold_num()+"份");
+            vh.foodScore.setText(" "+foodEntity.getStars()+"分");
             ImageLoader.getInstance().displayImage(foodEntity.getImage(), vh.foodPic, options/*, null*/);
             vh.foodPic.setTag(foodEntity.getFID());
             vh.foodPic.setOnClickListener(new OnClickListener() {

@@ -80,8 +80,7 @@
             android:id="@+id/top_panel_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:text="12:32" />
+            android:layout_marginRight="20dp" />
     </LinearLayout>
 
 </RelativeLayout>

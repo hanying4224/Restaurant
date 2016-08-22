@@ -22,7 +22,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp" >
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp" >
 
             <TextView
                 android:id="@+id/food_name"
@@ -46,24 +47,43 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp" >
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp">
 
-            <TextView
-                android:id="@+id/food_sales"
+            <LinearLayout 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:textColor="#ff494c5b"
-                android:textSize="14.0sp" />
-
-            <TextView
-                android:id="@+id/food_score"
+                android:layout_alignParentLeft="true">
+                <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textColor="@color/tct_gray"
+	                android:textSize="14.0sp"
+	                android:text="销量" />
+	            <TextView
+	                android:id="@+id/food_sales"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textColor="@color/tct_darkyellow_text"
+	                android:textSize="14.0sp" />
+            </LinearLayout>
+            <LinearLayout 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:ellipsize="end"
-                android:textColor="#ff494c5b"
-                android:textSize="14.0sp" />
+                android:layout_alignParentRight="true">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/tct_gray"
+                    android:textSize="14.0sp"
+                    android:text="评分" />
+                <TextView
+                    android:id="@+id/food_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/tct_darkyellow_text"
+                    android:textSize="14.0sp" />
+            </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
 

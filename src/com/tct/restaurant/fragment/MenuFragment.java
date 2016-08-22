@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -47,7 +48,8 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     public static final String FOODTYPE_STAPLE = "主食类";
      * */
 	private View currentView;
-	private Button bt_gift, /*bt_home,*/ bt_invitation, bt_orders, bt6;
+	private Button bt_gift, /*bt_home,*/ bt_invitation, bt6;
+	private Button bt_orders;
 	private String[] generalsTypes = new String[] { "点餐" };
 	private String[][] generals = new String[][] {
             { Constants.FOODTYPE_SPECIAL, Constants.FOODTYPE_HOT, Constants.FOODTYPE_COLD, Constants.FOODTYPE_STAPLE, Constants.FOODTYPE_SOUP, Constants.FOODTYPE_DRINKS }
@@ -76,6 +78,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
 		ExpandableListView expandableListView = (ExpandableListView) currentView.findViewById(R.id.food_list);
 		expandableListView.setAdapter(adapter);
 		expandableListView.setOnChildClickListener(onChildClickListener);
+		expandableListView.setGroupIndicator(null);
 		return currentView;
 	}
 	
@@ -143,12 +146,8 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded,
                 View convertView, ViewGroup parent) {
-            TextView textView = new TextView(mContext);
-            textView.setText(getGroup(groupPosition).toString());
-            textView.setTextSize(20);
-            textView.setGravity(Gravity.CENTER);
-            textView.setPadding(20, 10, 20, 10);
-            return textView;
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.food_group_view, null);
+            return convertView;
         }
 
         @Override
@@ -156,9 +155,10 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                 boolean isLastChild, View convertView, ViewGroup parent) {
             TextView textView = new TextView(mContext);
             textView.setText(getChild(groupPosition, childPosition).toString());
-            textView.setTextSize(20);
+            textView.setTextSize(15);
+            textView.setTextColor(mContext.getResources().getColor(R.color.tct_black));
             textView.setGravity(Gravity.CENTER);
-            textView.setPadding(20, 10, 20, 10);
+            textView.setPadding(20, 18, 20, 18);
             return textView;
         }
 

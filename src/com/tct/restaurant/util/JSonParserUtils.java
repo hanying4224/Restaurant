@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
+import com.tct.restaurant.entity.EvaluationItem;
 import com.tct.restaurant.entity.FoodEntity;
 import com.tct.restaurant.entity.OrderItem;
 
@@ -67,6 +68,38 @@ public class JSonParserUtils {
         } catch (JSONException e) {
             //e.printStackTrace();
             Log.d("ying", "parseOrder Error", e);
+        }
+        return list;
+    }
+    
+    public static List<EvaluationItem> parseEvaluation(String response) {
+        List<EvaluationItem> list = new ArrayList<EvaluationItem>();
+        Log.d("hao", "parseEvaluation response:\n"+response);
+        int start = response.indexOf("[");
+        int end = response.lastIndexOf("]");
+        if (start == -1 || end == -1) {
+            return list;
+        }
+        String jsonStr = response.substring(start, end + 1);
+        try {
+            JSONArray jsonArray = new JSONArray(jsonStr);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jb = jsonArray.getJSONObject(i);
+                EvaluationItem evaluationItem = new EvaluationItem();
+                evaluationItem.setEID(jb.getString("EID"));
+                evaluationItem.setFID(jb.getString("FID"));
+                evaluationItem.setPID(jb.getString("PID"));
+                evaluationItem.setUID(jb.getString("UID"));
+                evaluationItem.setContent(jb.getString("content"));
+                evaluationItem.setTime(jb.getString("time"));
+                evaluationItem.setImage(jb.getString("pic"));
+                evaluationItem.setEvaluation(jb.getString("evaluation"));
+                
+                list.add(evaluationItem);
+            }
+        } catch (JSONException e) {
+            //e.printStackTrace();
+            Log.d("hao", "parseOrder Error", e);
         }
         return list;
     }

@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <!-- android:background="@android:color/white"  -->
+    android:layout_height="match_parent" >
+
+    <!-- android:background="@android:color/white" -->
+
 
     <!-- <include -->
     <!-- android:id="@+id/home_head" -->
     <!-- layout="@layout/common_above_title_home" /> -->
 
-    <com.tct.restaurant.util.RefreshableListView
+    <!-- <com.tct.restaurant.util.RefreshableListView
         android:id="@+id/mineList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,13 +19,57 @@
         android:drawSelectorOnTop="false"
         android:fadingEdgeLength="0.0sp"
         android:scrollbars="none" >
-    </com.tct.restaurant.util.RefreshableListView>
+    </com.tct.restaurant.util.RefreshableListView> -->
     <!-- android:layout_below="@id/home_head" -->
+
+    <RelativeLayout
+        android:id="@+id/foodmenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp" >
+
+        <TextView
+            android:id="@+id/foodmenutype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textSize="24sp"
+            android:text="type" />
+        <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true">
+            
+	        <Button
+	            android:id="@+id/foodorder"
+	            android:layout_width="80dp"
+	            android:layout_height="35dp"
+	            android:layout_marginRight="25dp"
+	            android:background="@color/tct_white"
+	            android:text="多人点餐" />
+	        <Button
+	            android:id="@+id/foodsales"
+	            android:layout_width="80dp"
+	            android:layout_height="35dp"
+	            android:layout_marginRight="25dp"
+	            android:drawableRight="@drawable/rank"
+	            android:background="@color/tct_white"
+	            android:text="销量" />
+	        <Button
+	            android:id="@+id/foodscore"
+	            android:layout_width="80dp"
+	            android:layout_height="35dp"
+	            android:drawableRight="@drawable/rank"
+	            android:background="@color/tct_white"
+	            android:text="评价" />
+        </LinearLayout>
+    </RelativeLayout>
 
     <GridView
         android:id="@+id/grid_food"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:numColumns="3" >
     </GridView>
 

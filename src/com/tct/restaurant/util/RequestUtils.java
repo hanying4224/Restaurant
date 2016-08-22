@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.tct.BaseApplication;
 import com.tct.restaurant.R;
+import com.tct.restaurant.entity.EvaluationItem;
 import com.tct.restaurant.entity.FoodEntity;
 import com.tct.restaurant.entity.OrderItem;
 
@@ -29,6 +30,8 @@ public class RequestUtils {
     public static final int REQUEST_FOODLIST_OK = 100;
     public static final int REQUEST_USERORDER_OK = 101;
     public static final int REQUEST_USERUNORDER_OK = 102;
+	public static final int REQUEST_EVALUATIONLIST_OK = 103;
+    public static final int REQUEST_NOK = -1;
 
     public final static List<FoodEntity> foodList = new ArrayList<FoodEntity>();
     public final static List<FoodEntity> foodList_Current = new ArrayList<FoodEntity>();
@@ -71,6 +74,44 @@ public class RequestUtils {
         BaseApplication.getHttpRequestQueue().add(request);
     }
 
+    public final static List<EvaluationItem> evaluationList = new ArrayList<EvaluationItem>();
+    public static void requestEvaluationList(final String foodID, final Handler handler) {
+        evaluationList.clear();
+
+        String url= Constants.SERVER_IP + Constants.TABLE_QUERY;
+        StringRequest request = new StringRequest(Method.POST, url,
+                new Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        evaluationList.addAll(JSonParserUtils.parseEvaluation(response));
+                        Log.d("hao", "requestEvaluationList: evaluationList.size() = " + evaluationList.size());
+                        if (evaluationList.size() != 0) {
+                            if (handler != null) {
+                                handler.sendEmptyMessage(REQUEST_EVALUATIONLIST_OK);
+                            }
+                        } else {
+                            if (handler != null) {
+                                handler.sendEmptyMessage(REQUEST_NOK);
+                            }
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("hao", "onErrorResponse(requestFoodList), error = " + error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams()
+                    throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("str", "select * from evaluateinfo where FID="+foodID);
+                return map;
+            }
+        };
+        BaseApplication.getHttpRequestQueue().add(request);
+    }
+
     public static void getFoodListByType(final String foodType, final Handler handler) {
         foodList_Current.clear();
         if (foodList.size() != 0) {
@@ -84,7 +125,6 @@ public class RequestUtils {
             requestFoodList(foodType, handler);
         }
     }
-
 
     public final static List<OrderItem> userOrderList = new ArrayList<OrderItem>();
     public static void requestOrderList(final String userId, final Handler handler){

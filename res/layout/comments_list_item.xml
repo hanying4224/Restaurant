@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingTop="10dp"
+    android:paddingBottom="6dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/comments_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="false"
+        android:textSize="16sp"
+        android:textColor="@color/tct_gray"
+        android:text="comments1" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="3dp" >
+
+        <TextView
+            android:id="@+id/comments_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textSize="12sp"
+            android:textColor="@color/tct_gray"
+            android:text="time" />
+
+        <RatingBar
+            android:id="@+id/comments_ratingBar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:numStars="5"
+            android:rating="4" />
+    </RelativeLayout>
+
+</LinearLayout>

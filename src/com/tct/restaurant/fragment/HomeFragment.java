@@ -88,6 +88,8 @@ public class HomeFragment extends Fragment {
         gridAdapter = new GridViewAdapter(getActivity());
         currentView = inflater.inflate(R.layout.slidingpane_home_layout,
                 container, false);
+        TextView foodtype = (TextView) currentView.findViewById(R.id.foodmenutype);
+        foodtype.setText(mFoodType);
         foodGridView = (GridView) currentView.findViewById(R.id.grid_food);
         foodGridView.setNumColumns(3);
         foodGridView.setHorizontalSpacing(70);

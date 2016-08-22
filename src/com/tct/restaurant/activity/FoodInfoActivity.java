@@ -5,6 +5,8 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Instrumentation;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -12,11 +14,16 @@ import android.os.Handler;
 import android.text.method.MovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -24,6 +31,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tct.restaurant.R;
+import com.tct.restaurant.entity.EvaluationItem;
 import com.tct.restaurant.entity.FoodEntity;
 import com.tct.restaurant.util.InjectView;
 import com.tct.restaurant.util.Injector;
@@ -32,6 +40,7 @@ import com.tct.restaurant.util.RequestUtils;
 public class FoodInfoActivity extends Activity implements OnClickListener{
     View v1;
     View v2;
+    private Context mContext;
     private TextView foodType;
     private TextView foodName;
     private TextView foodPrice;
@@ -44,12 +53,42 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
     private TextView foodPepperyLittle;
     private TextView foodPepperyMiddle;
     private TextView foodPepperyMost;
+    private TextView foodEvaluation2;
+    private TextView foodNocommentsView;
     private ImageView foodPicView;
     private Button foodAddBt;
     private RatingBar rb;
+    private View detailBackView;//detail_back
+    private View mainContentRight;//detail_back
+    private View mainContentRightComments;//detail_back
+    private ListView commentsListView;
+    
     private String mFid = "";
     private FoodEntity mFoodEntity;
-    public  List<FoodEntity> foodList_Current = new ArrayList<FoodEntity>();
+    public List<FoodEntity> foodList_Current = new ArrayList<FoodEntity>();
+    private List<EvaluationItem> evaluationList = new ArrayList<EvaluationItem>();
+    private CommentsAdapter mCommentsAdapter = new CommentsAdapter();
+    
+    Handler mHandler = new Handler(){
+        public void handleMessage(android.os.Message msg) {
+            if (msg.what == RequestUtils.REQUEST_EVALUATIONLIST_OK) {
+                Log.i("hao", "handleMessage: "+RequestUtils.REQUEST_FOODLIST_OK);
+                evaluationList = RequestUtils.evaluationList;
+                foodEvaluation.setText(" "+evaluationList.size()+"条");
+                mCommentsAdapter.notifyDataSetChanged();
+                commentsListView.setVisibility(View.VISIBLE);
+                foodNocommentsView.setVisibility(View.GONE);
+                Log.i("hao", "handleMessage size: "+evaluationList.size());
+            } else if (msg.what == RequestUtils.REQUEST_NOK) {
+                Log.i("hao", "handleMessage: "+RequestUtils.REQUEST_NOK+" no data in db");
+                evaluationList.clear();
+                foodEvaluation.setText(" 0条");
+                mCommentsAdapter.notifyDataSetChanged();
+                commentsListView.setVisibility(View.GONE);
+                foodNocommentsView.setVisibility(View.VISIBLE);
+            }
+        };
+    };
     
     @SuppressLint("NewApi")
     @Override
@@ -58,9 +97,9 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.food_detail_layout);
-
+        mContext = this;
         mFid = getIntent().getStringExtra("fid");
-        Log.i("hao", "" + mFid);
+        Log.i("hao", "food id: " + mFid);
         
         init();
     }
@@ -76,6 +115,8 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
     private void init() {
         foodType = (TextView) findViewById(R.id.detail_food_type);
         foodPicView = (ImageView) findViewById(R.id.food_pic);
+        detailBackView = findViewById(R.id.top_panel_back);
+        detailBackView.setOnClickListener(this);
         foodName = (TextView) findViewById(R.id.food_name);
         foodPrice = (TextView) findViewById(R.id.food_price);
         rb = (RatingBar) findViewById(R.id.ratingBar);
@@ -97,8 +138,14 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
         foodEvaluation.setOnClickListener(this);
         foodAddBt = (Button) findViewById(R.id.food_add_to_cart);
         foodAddBt.setOnClickListener(this);
+        foodEvaluation2 = (TextView) findViewById(R.id.food_comment_num2);
         
-        
+        mainContentRight = findViewById(R.id.main_right);
+        mainContentRightComments = findViewById(R.id.main_right_comments);
+        commentsListView = (ListView) findViewById(R.id.comments_list);
+        commentsListView.setAdapter(mCommentsAdapter);
+        foodNocommentsView = (TextView) findViewById(R.id.food_comment_empty);
+
         // TODO Auto-generated method stub
         foodList_Current = RequestUtils.foodList_Current;
         for (int i = 0; i < foodList_Current.size(); i++) {
@@ -107,12 +154,13 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
             }
         }
         if (mFoodEntity != null) {
+            RequestUtils.requestEvaluationList(mFoodEntity.getFID(), mHandler);
             foodType.setText(mFoodEntity.getCategory());
             foodName.setText(mFoodEntity.getName());
             foodPrice.setText("¥"+mFoodEntity.getPrice());
             foodScore.setText(mFoodEntity.getStars()+"分");
             rb.setRating(Float.parseFloat(mFoodEntity.getStars()));
-            foodEvaluation.setText(" "+mFoodEntity.getEvaluation()+"条");
+//            foodEvaluation.setText(" "+mFoodEntity.getEvaluation()+"条");
             foodInfo.setText(mFoodEntity.getIntroduction());
             foodInfo.setMovementMethod(ScrollingMovementMethod.getInstance());
             ImageLoader.getInstance().displayImage(mFoodEntity.getImage(), foodPicView, options/*, null*/);
@@ -127,6 +175,31 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
         case R.id.food_add_to_cart:
             Log.i("hao", "HomeFragment click add to cart bt.. ");
             //ying
+            break;
+        case R.id.top_panel_back:
+            Log.i("hao", "HomeFragment click back.. ");
+            if (mainContentRight.getVisibility()==View.GONE && mainContentRightComments.getVisibility()==View.VISIBLE) {
+                mainContentRight.setVisibility(View.VISIBLE);
+                mainContentRightComments.setVisibility(View.GONE);
+            } else {
+                new Thread(){
+                    public void run() {
+                        try{
+                            Instrumentation inst = new Instrumentation();
+                            inst.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);
+                        }
+                        catch (Exception e) {
+                            Log.e("Exception when onBack", e.toString());
+                        }
+                    }
+                }.start();
+            }
+            break;
+        case R.id.food_comment_num:
+            Log.i("hao", "HomeFragment onClick food_comment_num");
+            foodEvaluation2.setText(foodEvaluation.getText());
+            mainContentRight.setVisibility(View.GONE);
+            mainContentRightComments.setVisibility(View.VISIBLE);
             break;
         case R.id.food_introduction:
             Log.i("hao", "HomeFragment onClick food_introduction");
@@ -188,11 +261,55 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
             foodPepperyMiddle.setTextColor(getResources().getColor(R.color.tct_gray));
             foodPepperyMost.setTextColor(getResources().getColor(R.color.tct_black));
             break;
-        case R.id.food_comment_num:
-            Log.i("hao", "HomeFragment onClick food_comment_num");
-            break;
         default:
             break;
+        }
+    }
+    
+    class CommentsAdapter extends BaseAdapter{
+        ViewHodler vHodler;
+
+        @Override
+        public int getCount() {
+            return evaluationList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return evaluationList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            vHodler = new ViewHodler();
+            
+            if (convertView == null) {
+                vHodler = new ViewHodler();
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.comments_list_item, null);
+                vHodler.content = (TextView) convertView.findViewById(R.id.comments_content);
+                vHodler.time = (TextView) convertView.findViewById(R.id.comments_time);
+                vHodler.rBar = (RatingBar) convertView.findViewById(R.id.comments_ratingBar);
+//                vHodler.delButton = (Button) convertView.findViewById(R.id.delete_order);
+//                vHodler.hurryButton = (Button) convertView.findViewById(R.id.hurryup_order);
+                convertView.setTag(vHodler);
+            } else {
+                vHodler = (ViewHodler) convertView.getTag();
+            }
+            vHodler.content.setText(evaluationList.get(position).getContent());
+            vHodler.time.setText(evaluationList.get(position).getTime());
+            vHodler.rBar.setRating(Float.parseFloat(evaluationList.get(position).getEvaluation()));
+            return convertView;
+        }
+
+        class ViewHodler {
+            TextView content;
+            TextView time;
+            RatingBar rBar;
         }
     }
 

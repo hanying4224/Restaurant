@@ -2,37 +2,155 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
     android:orientation="vertical" >
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:layout_weight="1"
+        ><TextView 
+           android:id="@+id/unorder_page"
+           android:layout_alignParentRight="true"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:paddingLeft="15dp"
+           android:paddingRight="15dp"
+           android:paddingTop="10dp"
+           android:paddingBottom="10dp"
+           android:background="@color/tct_gray"
+           android:textColor="@color/tct_darkyellow_text"
+           android:text="待下单"
+           />
+          <TextView 
+              android:id="@+id/ordered_page"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:paddingLeft="15dp"
+           android:paddingRight="15dp"
+           android:paddingTop="10dp"
+           android:paddingBottom="10dp"
+           android:layout_toLeftOf="@id/unorder_page"
+           android:textColor="@color/tct_darkyellow_text"
+           android:text="已下单"
+           android:background="@color/tct_lightgray_text"
+           /></RelativeLayout>
 
    <ListView 
        android:id="@+id/order_list"
        android:layout_width="match_parent"
        android:divider="@null"
        android:layout_height="0dp"
-       android:layout_weight="9"
+       android:layout_weight="10"
        ></ListView>
-   <LinearLayout 
+
+       
+   <LinearLayout
        android:id="@+id/bottom1"
        android:layout_width="match_parent"
        android:layout_height="0dp"
        android:layout_weight="1"
-       android:orientation="horizontal"
-       >
-       <Button 
+       android:orientation="horizontal" >
+
+       <TextView 
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:background="@color/tct_green"
-           android:textColor="@color/tct_white"
-           android:text="已点菜"
+           android:text="招牌"
            />
-       <Button 
+       <TextView 
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
+           android:textColor="@color/tct_darkyellow_text"
+           android:text="1"
+           />
+       <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="  热菜"
+           />
+       <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textColor="@color/tct_darkyellow_text"
+           android:text="2"
+           />
+       <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="  凉菜"
+           />
+       <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textColor="@color/tct_darkyellow_text"
+           android:text="1"
+           />
+       <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="  养生汤"
+           />
+       <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textColor="@color/tct_darkyellow_text"
+           android:text="1"
+           />
+       <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="  主食"
+           />
+       <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textColor="@color/tct_darkyellow_text"
+           android:text="1"
+           />
+           />
+       <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="  酒水"
+           />
+       <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textColor="@color/tct_darkyellow_text"
+           android:text="1"
+           />
+       <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="20sp"
+           android:text="    合计："
+           />
+       <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textColor="@color/tct_yellow"
+           android:textSize="20sp"
+           android:text="¥218"
+           />
+       <View 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"
+           />
+       <TextView 
+           android:layout_width="100dp"
+           android:layout_height="50dp"
+           android:layout_marginLeft="20dp"
+           android:paddingBottom="10dp"
+           android:gravity="center_horizontal|center_vertical"
+           android:text="下单"
            android:background="@color/tct_yellow"
            android:textColor="@color/tct_white"
-           android:text="下单"
            />
    </LinearLayout>
+
+
    <LinearLayout 
        android:id="@+id/bottom2"
        android:layout_width="match_parent"
@@ -41,11 +159,13 @@
        android:orientation="horizontal"
        android:gravity="right"
        >
-       <Button 
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
+       <TextView 
+           android:layout_width="100dp"
+           android:layout_height="50dp"
+           android:paddingBottom="10dp"
            android:background="@color/tct_yellow"
            android:textColor="@color/tct_white"
+           android:gravity="center_horizontal|center_vertical"
            android:text="结算"
            />
    </LinearLayout>

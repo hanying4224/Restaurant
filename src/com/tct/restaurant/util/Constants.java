@@ -43,6 +43,12 @@ public class Constants {
 	//User info
 	public static final String USER_ID = "1";
 
+	//Order status
+	public static final String STATUS_HANDING = "0";
+	public static final String STATUS_NORMAL = "1";
+	public static final String STATUS_COMPLETE = "2";
+	public static final String STATUS_UNORDER = "3";
+
 	/**
 	 ******************************************* 参数设置信息结束 ******************************************
 	 */

@@ -28,6 +28,7 @@ import com.tct.restaurant.entity.OrderItem;
 public class RequestUtils {
     public static final int REQUEST_FOODLIST_OK = 100;
     public static final int REQUEST_USERORDER_OK = 101;
+    public static final int REQUEST_USERUNORDER_OK = 102;
 
     public final static List<FoodEntity> foodList = new ArrayList<FoodEntity>();
     public final static List<FoodEntity> foodList_Current = new ArrayList<FoodEntity>();
@@ -84,6 +85,7 @@ public class RequestUtils {
         }
     }
 
+
     public final static List<OrderItem> userOrderList = new ArrayList<OrderItem>();
     public static void requestOrderList(final String userId, final Handler handler){
         userOrderList.clear();
@@ -94,7 +96,7 @@ public class RequestUtils {
                     @Override
                     public void onResponse(String response) {
                         userOrderList.addAll(JSonParserUtils.parseOrder(response));
-                        Log.d("ying", "getUserOrderList: userOrderList.size() = " + userOrderList.size());
+                        Log.d("ying", "requestOrderList: userOrderList.size() = " + userOrderList.size());
                         if (userOrderList.size() != 0) {
                             if (handler != null) {
                                 handler.sendEmptyMessage(REQUEST_USERORDER_OK);
@@ -112,7 +114,7 @@ public class RequestUtils {
             protected Map<String, String> getParams()
                     throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("str", "select * from orderinfo where UID= "+ userId);
+                map.put("str", "select * from orderinfo where UID= "+ userId+" and statu = 1");
                 return map;
             }
         };
@@ -126,6 +128,51 @@ public class RequestUtils {
             requestOrderList(userId, handler);
         }
     }
+    
+    
+    public final static List<OrderItem> userUnOrderList = new ArrayList<OrderItem>();
+    public static void requestUnOrderList(final String userId, final Handler handler){
+        userUnOrderList.clear();
+
+        String url= Constants.SERVER_IP + Constants.TABLE_QUERY;
+        StringRequest request = new StringRequest(Method.POST, url,
+                new Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        userUnOrderList.addAll(JSonParserUtils.parseOrder(response));
+                        Log.d("ying", "requestUnOrderList: userUnOrderList.size() = " + userUnOrderList.size());
+                        if (userUnOrderList.size() != 0) {
+                            if (handler != null) {
+                                handler.sendEmptyMessage(REQUEST_USERUNORDER_OK);
+                            }
+                            
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("ying", "requestUnOrderList, error = " + error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams()
+                    throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("str", "select * from orderinfo where UID= "+ userId+" and statu = 3");
+                return map;
+            }
+        };
+        BaseApplication.getHttpRequestQueue().add(request);
+    }
+
+    public static void getUserUnOrderList(final String userId, final Handler handler){
+        if (userUnOrderList.size() != 0) {
+            handler.sendEmptyMessage(REQUEST_USERUNORDER_OK);
+        } else {
+            requestUnOrderList(userId, handler);
+        }
+    }
+
 
     public static void insertAFoodToServerOrder(final FoodEntity fEntity, final Context context) {
         String url= Constants.SERVER_IP + Constants.NOEN_QUERY;
@@ -152,7 +199,7 @@ public class RequestUtils {
             protected Map<String, String> getParams()
                     throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
-                String sql = "insert into orderinfo (UID, FID, num) values ('"+Constants.USER_ID+"','"+fEntity.getFID()+"','1')";
+                String sql = "insert into orderinfo (UID, FID, num, statu) values ('"+Constants.USER_ID+"','"+fEntity.getFID()+"','1','1')";
                 Log.d("ying", "sql = "+ sql);
                 map.put("str", sql);
                 return map;

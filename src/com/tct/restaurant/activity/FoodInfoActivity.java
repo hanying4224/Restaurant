@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
@@ -166,6 +167,25 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
             ImageLoader.getInstance().displayImage(mFoodEntity.getImage(), foodPicView, options/*, null*/);
         }
     }
+    
+    OnClickListener dialogListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+            case R.id.ok:
+                RequestUtils.insertAFoodToUnOrder(mFoodEntity, FoodInfoActivity.this);
+                dialog.cancel();
+                break;
+            case R.id.cancel:
+                dialog.cancel();
+                break;
+
+            default:
+                break;
+            }
+        }
+    };
+    AlertDialog dialog;
 
     @SuppressLint("NewApi")
     @Override
@@ -173,8 +193,19 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
         // TODO Auto-generated method stub
         switch (v.getId()) {
         case R.id.food_add_to_cart:
-            Log.i("hao", "HomeFragment click add to cart bt.. ");
-            //ying
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            View view = LayoutInflater.from(this).inflate(R.layout.dialog_order_confirm, null);
+            TextView tv =  (TextView) view.findViewById(R.id.dialog_text);
+            tv.setText("添加到待下单列表？");
+            Button okBtn = (Button) view.findViewById(R.id.ok);
+            okBtn.setText("好的");
+            Button cancelBtn = (Button) view.findViewById(R.id.cancel);
+            okBtn.setOnClickListener(dialogListener);
+            cancelBtn.setOnClickListener(dialogListener);
+            builder.setView(view);
+            dialog = builder.create();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
             break;
         case R.id.top_panel_back:
             Log.i("hao", "HomeFragment click back.. ");

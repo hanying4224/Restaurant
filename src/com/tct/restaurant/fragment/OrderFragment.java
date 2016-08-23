@@ -14,6 +14,7 @@ package com.tct.restaurant.fragment;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -21,6 +22,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -131,7 +133,6 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
     }
 
     class OrderAdapter extends BaseAdapter{
-        ViewHodler vHodler;
 
         @Override
         public int getCount() {
@@ -149,7 +150,8 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            final ViewHodler vHodler;
             if (convertView == null) {
                 vHodler = new ViewHodler();
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.order_list_item, null);
@@ -161,6 +163,9 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                 vHodler.plus_reduce_layout = (LinearLayout) convertView.findViewById(R.id.plus_reduce_layout);
                 vHodler.timeleft_layout = (LinearLayout) convertView.findViewById(R.id.timeleft_layout);
                 vHodler.lineview = convertView.findViewById(R.id.time_line1);
+                vHodler.plusImg = (ImageView) convertView.findViewById(R.id.plus_img);
+                vHodler.reduceImg = (ImageView) convertView.findViewById(R.id.reduce_img);
+                vHodler.numberTv = (TextView) convertView.findViewById(R.id.number);
                 convertView.setTag(vHodler);
             } else {
                 vHodler = (ViewHodler) convertView.getTag();
@@ -178,9 +183,64 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                 vHodler.hurryButton.setVisibility(View.GONE);
                 vHodler.plus_reduce_layout.setVisibility(View.VISIBLE);
                 vHodler.timeleft_layout.setVisibility(View.GONE);
+                vHodler.numberTv.setText(unorderList.get(position).getNum());
             }
             vHodler.title.setText(fEntity.getName());
             vHodler.price.setText("¥" + fEntity.getPrice());
+            vHodler.delButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pos2 = position;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_order_confirm, null);
+                    TextView tv =  (TextView) view.findViewById(R.id.dialog_text);
+                    tv.setText("确定通知厨房取消此菜品？");
+                    Button okBtn = (Button) view.findViewById(R.id.ok);
+                    okBtn.setText("是哒");
+                    Button cancelBtn = (Button) view.findViewById(R.id.cancel);
+                    okBtn.setOnClickListener(listener2);
+                    cancelBtn.setOnClickListener(listener2);
+                    builder.setView(view);
+                    dialog2 = builder.create();
+                    dialog2.setCanceledOnTouchOutside(false);
+                    dialog2.show();
+                }
+            });
+            
+            vHodler.plusImg.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String num = (String) vHodler.numberTv.getText();
+                    vHodler.numberTv.setText("" + (Integer.parseInt(num) + 1));
+                }
+            });
+            
+            vHodler.reduceImg.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String num = (String) vHodler.numberTv.getText();
+                    int new_i = Integer.parseInt(num) - 1;
+                    
+                    if (new_i < 1) {
+                        pos = position;
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_order_confirm, null);
+                        TextView tv =  (TextView) view.findViewById(R.id.dialog_text);
+                        tv.setText("主人，这么美味，不尝尝吗？");
+                        Button okBtn = (Button) view.findViewById(R.id.ok);
+                        okBtn.setText("不尝");
+                        Button cancelBtn = (Button) view.findViewById(R.id.cancel);
+                        okBtn.setOnClickListener(listener);
+                        cancelBtn.setOnClickListener(listener);
+                        builder.setView(view);
+                        dialog = builder.create();
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
+                    } else {
+                        vHodler.numberTv.setText("" + new_i);
+                    }
+                }
+            });
 
             ImageLoader.getInstance().displayImage(fEntity.getImage(), vHodler.imageV);
             return convertView;
@@ -195,8 +255,55 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
             LinearLayout plus_reduce_layout;
             LinearLayout timeleft_layout;
             View lineview;
+            ImageView plusImg, reduceImg;
+            TextView numberTv;
         }
     }
+    
+    AlertDialog dialog;
+    int pos;
+    OnClickListener listener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Log.d("ying", "pos = "+ pos);
+            switch (v.getId()) {
+            case R.id.ok:
+//                unorderList.remove(pos);
+//                adapter.notifyDataSetChanged();
+                RequestUtils.userUnOrderList.clear();
+                RequestUtils.delAFoodFromUnOrder(unorderList.get(pos).getFoodEntity(), mHandler);
+                dialog.cancel();
+                break;
+            case R.id.cancel:
+                dialog.cancel();
+                break;
+
+            default:
+                break;
+            }
+        }
+    };
+
+    AlertDialog dialog2;
+    int pos2;
+    OnClickListener listener2 = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+            case R.id.ok:
+                RequestUtils.userOrderList.clear();
+                RequestUtils.delAFoodFromOrder(orderList.get(pos2).getFoodEntity(), mHandler);
+                dialog2.cancel();
+                break;
+            case R.id.cancel:
+                dialog2.cancel();
+                break;
+
+            default:
+                break;
+            }
+        }
+    };
 
     @Override
     public void onClick(View v) {

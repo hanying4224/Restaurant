@@ -135,6 +135,7 @@ public class RequestUtils {
                 new Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        userOrderList.clear();
                         userOrderList.addAll(JSonParserUtils.parseOrder(response));
                         Log.d("ying", "requestOrderList: userOrderList.size() = " + userOrderList.size());
                         if (userOrderList.size() != 0) {
@@ -179,13 +180,13 @@ public class RequestUtils {
                 new Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        userUnOrderList.clear();
                         userUnOrderList.addAll(JSonParserUtils.parseOrder(response));
                         Log.d("ying", "requestUnOrderList: userUnOrderList.size() = " + userUnOrderList.size());
                         if (userUnOrderList.size() != 0) {
                             if (handler != null) {
                                 handler.sendEmptyMessage(REQUEST_USERUNORDER_OK);
                             }
-                            
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -241,6 +242,90 @@ public class RequestUtils {
                 Map<String, String> map = new HashMap<String, String>();
                 String sql = "insert into orderinfo (UID, FID, num, statu) values ('"+Constants.USER_ID+"','"+fEntity.getFID()+"','1','1')";
                 Log.d("ying", "sql = "+ sql);
+                map.put("str", sql);
+                return map;
+            }
+        };
+        BaseApplication.getHttpRequestQueue().add(request);
+    }
+
+    public static void insertAFoodToUnOrder(final FoodEntity fEntity, final Context context) {
+        String url= Constants.SERVER_IP + Constants.NOEN_QUERY;
+        StringRequest request = new StringRequest(Method.POST, url,
+                new Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //更新购物车
+                        requestUnOrderList(Constants.USER_ID, null);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("ying", "insertAFoodToUnOrder, error = " + error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams()
+                    throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                String sql = "insert into orderinfo (UID, FID, num, statu) values ('"+Constants.USER_ID+"','"+fEntity.getFID()+"','1','3')";
+                Log.d("ying", "sql = "+ sql);
+                map.put("str", sql);
+                return map;
+            }
+        };
+        BaseApplication.getHttpRequestQueue().add(request);
+    }
+    
+    public static void delAFoodFromUnOrder(final FoodEntity fEntity, final Handler handler) {
+        String url= Constants.SERVER_IP + Constants.NOEN_QUERY;
+        StringRequest request = new StringRequest(Method.POST, url,
+                new Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //更新购物车
+                        requestUnOrderList(Constants.USER_ID, handler);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("ying", "delAFoodFromUnOrder, error = " + error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams()
+                    throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                String sql = "delete from orderinfo where UID="+Constants.USER_ID+" and FID="+fEntity.getFID()+" and statu=3";
+                Log.d("ying", "sql = "+ sql+" , del-name="+fEntity.getName());
+                map.put("str", sql);
+                return map;
+            }
+        };
+        BaseApplication.getHttpRequestQueue().add(request);
+    }
+    
+    public static void delAFoodFromOrder(final FoodEntity fEntity, final Handler handler) {
+        String url= Constants.SERVER_IP + Constants.NOEN_QUERY;
+        StringRequest request = new StringRequest(Method.POST, url,
+                new Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //更新订单
+                        requestOrderList(Constants.USER_ID, handler);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("ying", "delAFoodFromOrder, error = " + error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams()
+                    throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                String sql = "delete from orderinfo where UID="+Constants.USER_ID+" and FID="+fEntity.getFID()+" and statu=1";
+                Log.d("ying", "sql = "+ sql+" , del-name="+fEntity.getName());
                 map.put("str", sql);
                 return map;
             }

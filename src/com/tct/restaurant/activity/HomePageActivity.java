@@ -3,6 +3,7 @@ package com.tct.restaurant.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.app.Instrumentation;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,8 +13,11 @@ import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
 import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -23,12 +27,13 @@ import com.tct.restaurant.fragment.MenuFragment;
 import com.tct.restaurant.util.InjectView;
 import com.tct.restaurant.util.Injector;
 
-public class HomePageActivity extends Activity {
+public class HomePageActivity extends Activity implements OnClickListener{
 	@InjectView(R.id.slidingpanellayout)
 	private SlidingPaneLayout slidingPaneLayout;
 	private MenuFragment menuFragment;
 	private HomeFragment contentFragment;
 	private TextView timeView;
+	private View backView;
 	private DisplayMetrics displayMetrics = new DisplayMetrics();
 	private int maxMargin = 0;
 
@@ -37,12 +42,25 @@ public class HomePageActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+
+//		this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
+//		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//去掉信息栏
+		/*Window window = getWindow();
+		WindowManager.LayoutParams params = window.getAttributes();
+        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        window.setAttributes(params);  */
+//		View main = getLayoutInflater().from(this).inflate(R.layout.slidingpane_main_layout, null);
+//		main.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//		setContentView(main);
 		setContentView(R.layout.slidingpane_main_layout);
+
 		Injector.get(this).inject();//init views
 		timeView = (TextView) findViewById(R.id.top_panel_time);
 		new TimeThread().start();
+		backView = findViewById(R.id.top_panel_back);
+		backView.setOnClickListener(this);
 		menuFragment = new MenuFragment();
 		contentFragment = new HomeFragment();
 		FragmentTransaction transaction = getFragmentManager()
@@ -94,6 +112,31 @@ public class HomePageActivity extends Activity {
 	public SlidingPaneLayout getSlidingPaneLayout() {
 		return slidingPaneLayout;
 	}
+
+	@Override
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+        switch (v.getId()) {
+        case R.id.top_panel_back:
+            Log.e("hao", "back key press");
+            new Thread(){
+                public void run() {
+                    try{
+                        Instrumentation inst = new Instrumentation();
+                        inst.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);
+                    }
+                    catch (Exception e) {
+                        Log.e("Exception when press home", e.toString());
+                    }
+                }
+            }.start();
+            break;
+
+        default:
+            break;
+        }
+    }
+
 	private int TIMEUPDATE = 100;
 	class TimeThread extends Thread{
 	    @Override
@@ -123,4 +166,5 @@ public class HomePageActivity extends Activity {
             }
         }
     };
+
 }

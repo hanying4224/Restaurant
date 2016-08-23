@@ -21,13 +21,19 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.FrameLayout.LayoutParams;
 
 import com.tct.restaurant.R;
 
 @SuppressLint("NewApi")
-public class PayFragment extends Fragment {
+public class PayFragment extends Fragment implements OnClickListener{
 	private View currentView;
+	private View payErweimaLayout;
+	private View payTuanLayout;
+	private TextView payErweimaTextView;
+	private TextView payTuanTextView;
+	
 
 	public void setCurrentViewPararms(FrameLayout.LayoutParams layoutParams) {
 		currentView.setLayoutParams(layoutParams);
@@ -43,7 +49,31 @@ public class PayFragment extends Fragment {
 		// TODO Auto-generated method stub
 		currentView = inflater.inflate(R.layout.slidingpane_pay_layout,
 				container, false);
+		payErweimaLayout = currentView.findViewById(R.id.pay_erweima_layout);
+		payTuanLayout = currentView.findViewById(R.id.pay_tuan_layout);
+		payErweimaTextView = (TextView) currentView.findViewById(R.id.pay_erweima);
+		payErweimaTextView.setOnClickListener(this);
+		payTuanTextView = (TextView) currentView.findViewById(R.id.pay_tuan);
+		payTuanTextView.setOnClickListener(this);
+		
 		return currentView;
 	}
+
+    @Override
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+        switch (v.getId()) {
+        case R.id.pay_erweima:
+            payErweimaLayout.setVisibility(View.VISIBLE);
+            payTuanLayout.setVisibility(View.GONE);
+            break;
+        case R.id.pay_tuan:
+            payErweimaLayout.setVisibility(View.GONE);
+            payTuanLayout.setVisibility(View.VISIBLE);
+            break;
+        default:
+            break;
+        }
+    }
 
 }

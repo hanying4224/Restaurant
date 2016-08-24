@@ -39,16 +39,19 @@
 
         <View
             android:layout_width="@dimen/slidingpane_empty_width"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/tct_gray_bg" />
 
         <FrameLayout
             android:id="@+id/slidingpane_content"
             android:layout_width="@dimen/slidingpane_content_width"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/tct_gray_bg" />
 
-        <View
+        <!-- <View
             android:layout_width="@dimen/slidingpane_empty_width"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="#ededed" /> -->
     </android.support.v4.widget.SlidingPaneLayout>
 
 </FrameLayout>

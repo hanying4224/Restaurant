@@ -63,6 +63,7 @@
     <color name="tct_gray">#969696</color>
     <color name="tct_lightgray_text">#cccccc</color>
     <color name="tct_darkyellow_text">#9e5f31</color>
+    <color name="tct_gray_bg">#ededed</color>
 
     <color name="tct_white">#ffffff</color>
     <color name="tct_white_bg">#f6f6f6</color>

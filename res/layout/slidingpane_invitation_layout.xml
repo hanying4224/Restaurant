@@ -1,15 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:orientation="vertical" >
+    android:padding="24dp"
+    android:background="@color/tct_white" >
 
-    <TextView
+    <!--
+         <TextView
         android:id="@+id/slidingpane_gift"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="娱乐区"
         android:textSize="40sp" />
+    -->
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="332dp"
+        android:layout_height="478dp"
+        android:background="@drawable/movie"
+        android:gravity="center" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/movie_icon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="430dp"
+            android:layout_height="230dp"
+            android:background="@drawable/music"
+            android:gravity="center" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/music_icon" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="430dp"
+            android:layout_height="230dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/news"
+            android:gravity="center" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/news_icon" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

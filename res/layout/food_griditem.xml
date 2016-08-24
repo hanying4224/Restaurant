@@ -17,8 +17,7 @@
             android:id="@+id/food_pic"
             android:layout_width="240dp"
             android:layout_height="163dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/welcome" />
+            android:scaleType="fitXY"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

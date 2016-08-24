@@ -40,6 +40,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tct.restaurant.R;
 import com.tct.restaurant.activity.HomePageActivity;
@@ -72,6 +73,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
             } else if (msg.what == RequestUtils.REQUEST_USERUNORDER_OK) {
                 unorderList.clear();
                 unorderList.addAll(RequestUtils.userUnOrderList);
+                Log.d("ying", "待下单，    notifyDataSetChanged");
                 adapter.notifyDataSetChanged();
             }
 	    };
@@ -136,6 +138,14 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
     }
+    
+    DisplayImageOptions options = new DisplayImageOptions.Builder() 
+    //.showStubImage(R.drawable.ic_launcher)          // 设置图片下载期间显示的图片 
+    //.showImageForEmptyUri(R.drawable.ic_launcher)  // 设置图片Uri为空或是错误的时候显示的图片 
+    //.showImageOnFail(R.drawable.ic_launcher)       // 设置图片加载或解码过程中发生错误显示的图片     
+    .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中 
+    .cacheOnDisc(true)                          // 设置下载的图片是否缓存在SD卡中 
+    .build();
 
     class OrderAdapter extends BaseAdapter{
 
@@ -178,6 +188,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                 vHodler = (ViewHodler) convertView.getTag();
             }
             FoodEntity fEntity;
+            Log.d("ying", "getview,   current_tag = "+ current_tag);
             if (current_tag == 0) {
                 fEntity = orderList.get(position).getFoodEntity();
                 vHodler.delButton.setVisibility(View.VISIBLE);
@@ -195,7 +206,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
             if (fEntity!=null) {
                 vHodler.title.setText(fEntity.getName());
                 vHodler.price.setText("¥" + fEntity.getPrice());
-                ImageLoader.getInstance().displayImage(fEntity.getImage(), vHodler.imageV);
+                ImageLoader.getInstance().displayImage(fEntity.getImage(), vHodler.imageV, options);
             }
             vHodler.delButton.setOnClickListener(new OnClickListener() {
                 @Override
@@ -361,6 +372,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
             bottom2Layout.setVisibility(View.VISIBLE);
             orderedTV.setBackgroundColor(getResources().getColor(R.color.tct_yellow));
             unorderedTV.setBackgroundColor(getResources().getColor(R.color.tct_lightgray_text));
+            Log.d("ying", "已下单");
             RequestUtils.getUserOrderList(Constants.USER_ID, mHandler);
             break;
         case R.id.unorder_page:
@@ -369,6 +381,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
             bottom2Layout.setVisibility(View.GONE);
             orderedTV.setBackgroundColor(getResources().getColor(R.color.tct_lightgray_text));
             unorderedTV.setBackgroundColor(getResources().getColor(R.color.tct_yellow));
+            Log.d("ying", "待下单");
             RequestUtils.getUserUnOrderList(Constants.USER_ID, mHandler);
             break;
         case R.id.go_pay:

@@ -138,12 +138,12 @@ public class RequestUtils {
                         userOrderList.clear();
                         userOrderList.addAll(JSonParserUtils.parseOrder(response));
                         Log.d("ying", "requestOrderList: userOrderList.size() = " + userOrderList.size());
-                        if (userOrderList.size() != 0) {
+//                        if (userOrderList.size() != 0) {
                             if (handler != null) {
                                 handler.sendEmptyMessage(REQUEST_USERORDER_OK);
                             }
                             
-                        }
+//                        }
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -183,11 +183,11 @@ public class RequestUtils {
                         userUnOrderList.clear();
                         userUnOrderList.addAll(JSonParserUtils.parseOrder(response));
                         Log.d("ying", "requestUnOrderList: userUnOrderList.size() = " + userUnOrderList.size());
-                        if (userUnOrderList.size() != 0) {
+//                        if (userUnOrderList.size() != 0) {
                             if (handler != null) {
                                 handler.sendEmptyMessage(REQUEST_USERUNORDER_OK);
                             }
-                        }
+//                        }
                     }
                 }, new Response.ErrorListener() {
                     @Override

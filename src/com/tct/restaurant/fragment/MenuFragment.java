@@ -50,6 +50,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
 	private View currentView;
 	private Button bt_gift, /*bt_home,*/ bt_invitation, bt6;
 	private Button bt_orders;
+	private Button btn_nearby;
 	private String[] generalsTypes = new String[] { "点餐" };
 	private String[][] generals = new String[][] {
             { Constants.FOODTYPE_SPECIAL, Constants.FOODTYPE_HOT, Constants.FOODTYPE_COLD, Constants.FOODTYPE_STAPLE, Constants.FOODTYPE_SOUP, Constants.FOODTYPE_DRINKS }
@@ -70,6 +71,8 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
 //		bt_home = (Button) currentView.findViewById(R.id.btn_home);
 		bt_invitation = (Button) currentView.findViewById(R.id.btn_amusement);
 		bt_orders = (Button) currentView.findViewById(R.id.btn_order);
+		btn_nearby = (Button) currentView.findViewById(R.id.btn_nearby);
+		btn_nearby.setOnClickListener(this);
 		bt_gift.setOnClickListener(this);
 //		bt_home.setOnClickListener(this);
 		bt_invitation.setOnClickListener(this);
@@ -201,6 +204,12 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			ft.commit();
 			break;
+		case R.id.btn_nearby:
+            Fragment nearbyFragment = new NearbyFragment();
+            ft.replace(R.id.slidingpane_content, nearbyFragment);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
+            break;
 		}
 //		((HomePageActivity) getActivity()).getSlidingPaneLayout().closePane();
 	}

@@ -10,7 +10,7 @@
       android:id="@+id/reduce_img"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:padding="5dp"
+      android:padding="6dp"
       android:src="@drawable/reduce"
       />
   <View 
@@ -22,12 +22,13 @@
       android:id="@+id/number"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:paddingLeft="10dp"
-      android:paddingRight="10dp"
+      android:paddingLeft="13dp"
+      android:paddingRight="13dp"
       android:paddingBottom="5dp"
       android:paddingTop="5dp"
+      android:textSize="16sp"
       android:textColor="@color/tct_gray"
-      android:text="1"
+      android:text="3"
       />
   <View 
       android:layout_width="1dp"
@@ -38,7 +39,7 @@
       android:id="@+id/plus_img"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:padding="5dp"
+      android:padding="6dp"
       android:src="@drawable/plus"
       />
 

@@ -2,8 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/tct_white"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
     android:orientation="vertical" >
     
     <RelativeLayout 
@@ -15,8 +18,8 @@
            android:layout_alignParentRight="true"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:paddingLeft="15dp"
-           android:paddingRight="15dp"
+           android:paddingLeft="25dp"
+           android:paddingRight="25dp"
            android:paddingTop="10dp"
            android:paddingBottom="10dp"
            android:background="@color/tct_gray"
@@ -27,8 +30,8 @@
               android:id="@+id/ordered_page"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:paddingLeft="15dp"
-           android:paddingRight="15dp"
+           android:paddingLeft="25dp"
+           android:paddingRight="25dp"
            android:paddingTop="10dp"
            android:paddingBottom="10dp"
            android:layout_toLeftOf="@id/unorder_page"
@@ -51,8 +54,30 @@
        android:layout_width="match_parent"
        android:layout_height="0dp"
        android:layout_weight="1"
+       android:gravity="right"
        android:orientation="horizontal" >
 
+       
+       <TextView 
+           android:layout_width="270px"
+           android:layout_height="90px"
+           android:textSize="45px"
+           android:layout_marginLeft="20dp"
+           android:gravity="center_horizontal|center_vertical"
+           android:text="下单"
+           android:background="@color/tct_yellow"
+           android:textColor="@color/tct_white"
+           />
+   </LinearLayout>
+
+
+   <LinearLayout 
+       android:id="@+id/bottom2"
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:layout_weight="1"
+       android:orientation="horizontal"
+       >
        <TextView 
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
@@ -139,34 +164,13 @@
            android:layout_weight="1"
            />
        <TextView 
-           android:layout_width="100dp"
-           android:layout_height="50dp"
-           android:layout_marginLeft="20dp"
-           android:paddingBottom="10dp"
-           android:gravity="center_horizontal|center_vertical"
-           android:text="下单"
+           android:layout_width="270px"
+           android:layout_height="90px"
            android:background="@color/tct_yellow"
            android:textColor="@color/tct_white"
-           />
-   </LinearLayout>
-
-
-   <LinearLayout 
-       android:id="@+id/bottom2"
-       android:layout_width="match_parent"
-       android:layout_height="0dp"
-       android:layout_weight="1"
-       android:orientation="horizontal"
-       android:gravity="right"
-       >
-       <TextView 
-           android:layout_width="100dp"
-           android:layout_height="50dp"
-           android:paddingBottom="10dp"
-           android:background="@color/tct_yellow"
-           android:textColor="@color/tct_white"
+           android:textSize="45px"
            android:gravity="center_horizontal|center_vertical"
-           android:text="结算"
+           android:text="支付"
            />
    </LinearLayout>
 

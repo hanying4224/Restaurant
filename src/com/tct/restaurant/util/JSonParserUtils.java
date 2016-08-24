@@ -43,6 +43,11 @@ public class JSonParserUtils {
     
     public static List<OrderItem> parseOrder(String response) {
         List<OrderItem> list = new ArrayList<OrderItem>();
+        int start = response.indexOf("[");
+        int end = response.lastIndexOf("]");
+        if (start == -1 || end == -1) {
+            return list;
+        }
         String jsonStr = response.substring(response.indexOf("["), response.lastIndexOf("]") + 1);
         try {
             JSONArray jsonArray = new JSONArray(jsonStr);

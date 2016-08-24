@@ -61,6 +61,13 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"
             android:src="@drawable/call" />
+        <ImageView
+            android:id="@+id/top_panel_ringing_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:src="@drawable/calling"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/top_panel_search_pic"

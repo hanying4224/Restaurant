@@ -19,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tct.restaurant.R;
@@ -34,6 +35,8 @@ public class HomePageActivity extends Activity implements OnClickListener{
 	private HomeFragment contentFragment;
 	private TextView timeView;
 	private View backView;
+	private ImageView callView;
+    private ImageView callingView;
 	private DisplayMetrics displayMetrics = new DisplayMetrics();
 	private int maxMargin = 0;
 
@@ -61,6 +64,10 @@ public class HomePageActivity extends Activity implements OnClickListener{
 		new TimeThread().start();
 		backView = findViewById(R.id.top_panel_back);
 		backView.setOnClickListener(this);
+		callView = (ImageView) findViewById(R.id.top_panel_ring_pic);
+        callView.setOnClickListener(this);
+        callingView = (ImageView) findViewById(R.id.top_panel_ringing_pic);
+        callingView.setOnClickListener(this);
 		menuFragment = new MenuFragment();
 		contentFragment = new HomeFragment();
 		FragmentTransaction transaction = getFragmentManager()
@@ -135,7 +142,16 @@ public class HomePageActivity extends Activity implements OnClickListener{
                 }
             }.start();
             break;
-
+        case R.id.top_panel_ring_pic:
+            Log.i("hao", "HomeFragment onClick top_panel_ring_pic");
+            callView.setVisibility(View.GONE);
+            callingView.setVisibility(View.VISIBLE);
+            break;
+        case R.id.top_panel_ringing_pic:
+            Log.i("hao", "HomeFragment onClick top_panel_ringing_pic");
+            callView.setVisibility(View.VISIBLE);
+            callingView.setVisibility(View.GONE);
+            break;
         default:
             break;
         }

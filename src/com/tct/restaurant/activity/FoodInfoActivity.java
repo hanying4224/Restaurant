@@ -59,6 +59,10 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
     private TextView foodNocommentsView;
     private ImageView foodPicView;
     private ImageView foodCommentBackView;
+    private ImageView callView;
+    private ImageView callingView;
+    private View introductionLineView;
+    private View ingredientLineView;
     private Button foodAddBt;
     private RatingBar rb;
     private View detailBackView;//detail_back
@@ -160,6 +164,13 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
         foodNocommentsView = (TextView) findViewById(R.id.food_comment_empty);
         foodCommentBackView = (ImageView) findViewById(R.id.food_comment_back);
         foodCommentBackView.setOnClickListener(this);
+        callView = (ImageView) findViewById(R.id.top_panel_ring_pic);
+        callView.setOnClickListener(this);
+        callingView = (ImageView) findViewById(R.id.top_panel_ringing_pic);
+        callingView.setOnClickListener(this);
+        ingredientLineView = findViewById(R.id.food_ingredient_line);
+        introductionLineView = findViewById(R.id.food_introduction_line);
+
         // TODO Auto-generated method stub
         foodList_Current = RequestUtils.foodList_Current;
         for (int i = 0; i < foodList_Current.size(); i++) {
@@ -272,6 +283,9 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
             foodIngredient.setTextColor(getResources().getColor(R.color.tct_gray));
             foodIngredient.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             foodInfo.setText(mFoodEntity.getIntroduction());
+//            ingredientLineView.setBackground(getResources().getColor(R.color.tct_gray));
+            ingredientLineView.setBackgroundColor(getResources().getColor(R.color.tct_gray));
+            introductionLineView.setBackgroundColor(getResources().getColor(R.color.tct_black));
             break;
         case R.id.food_ingredient:
             Log.i("hao", "HomeFragment onClick food_ingredient");
@@ -280,6 +294,8 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
             foodIntroduction.setTextColor(getResources().getColor(R.color.tct_gray));
             foodIntroduction.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             foodInfo.setText(mFoodEntity.getIngredient());
+            ingredientLineView.setBackgroundColor(getResources().getColor(R.color.tct_black));
+            introductionLineView.setBackgroundColor(getResources().getColor(R.color.tct_gray));
             break;
         case R.id.food_taste_peppery_no:
             Log.i("hao", "HomeFragment onClick food_taste_peppery_no");
@@ -324,6 +340,16 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
             foodPepperyLittle.setTextColor(getResources().getColor(R.color.tct_gray));
             foodPepperyMiddle.setTextColor(getResources().getColor(R.color.tct_gray));
             foodPepperyMost.setTextColor(getResources().getColor(R.color.tct_black));
+            break;
+        case R.id.top_panel_ring_pic:
+            Log.i("hao", "HomeFragment onClick top_panel_ring_pic");
+            callView.setVisibility(View.GONE);
+            callingView.setVisibility(View.VISIBLE);
+            break;
+        case R.id.top_panel_ringing_pic:
+            Log.i("hao", "HomeFragment onClick top_panel_ringing_pic");
+            callView.setVisibility(View.VISIBLE);
+            callingView.setVisibility(View.GONE);
             break;
         default:
             break;

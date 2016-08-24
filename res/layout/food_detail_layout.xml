@@ -153,10 +153,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
 	                <View 
+	                    android:id="@+id/food_introduction_line"
 	                    android:layout_width="80dp"
                         android:layout_height="1dp"
                         android:background="@color/tct_black"/>
 	                <View 
+	                    android:id="@+id/food_ingredient_line"
                         android:layout_width="80dp"
                         android:layout_height="1dp"
                         android:background="@color/tct_gray"/>

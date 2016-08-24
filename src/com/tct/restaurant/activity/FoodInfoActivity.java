@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.text.format.DateFormat;
 import android.text.method.MovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -33,6 +35,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tct.restaurant.R;
+import com.tct.restaurant.activity.HomePageActivity.TimeThread;
 import com.tct.restaurant.entity.EvaluationItem;
 import com.tct.restaurant.entity.FoodEntity;
 import com.tct.restaurant.util.InjectView;
@@ -69,13 +72,14 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
     private View mainContentRight;//detail_back
     private View mainContentRightComments;//detail_back
     private ListView commentsListView;
-    
+    private TextView timeView;
     private String mFid = "";
     private FoodEntity mFoodEntity;
     public List<FoodEntity> foodList_Current = new ArrayList<FoodEntity>();
     private List<EvaluationItem> evaluationList = new ArrayList<EvaluationItem>();
     private CommentsAdapter mCommentsAdapter = new CommentsAdapter();
-    
+    private int TIMEUPDATE = 100;
+
     Handler mHandler = new Handler(){
         public void handleMessage(android.os.Message msg) {
             if (msg.what == RequestUtils.REQUEST_EVALUATIONLIST_OK) {
@@ -93,6 +97,10 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
                 mCommentsAdapter.notifyDataSetChanged();
                 commentsListView.setVisibility(View.GONE);
                 foodNocommentsView.setVisibility(View.VISIBLE);
+            } else if (msg.what == TIMEUPDATE) {
+                long sysTime = System.currentTimeMillis();
+                CharSequence sysTimeStr = DateFormat.format("hh:mm", sysTime);
+                timeView.setText(sysTimeStr);
             }
         };
     };
@@ -170,7 +178,8 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
         callingView.setOnClickListener(this);
         ingredientLineView = findViewById(R.id.food_ingredient_line);
         introductionLineView = findViewById(R.id.food_introduction_line);
-
+        timeView = (TextView) findViewById(R.id.top_panel_time);
+        new TimeThread().start();
         // TODO Auto-generated method stub
         foodList_Current = RequestUtils.foodList_Current;
         for (int i = 0; i < foodList_Current.size(); i++) {
@@ -400,6 +409,24 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
             TextView content;
             TextView time;
             RatingBar rBar;
+        }
+    }
+    
+    class TimeThread extends Thread{
+        @Override
+        public void run() {
+            // TODO Auto-generated method stub
+            do {
+                try {
+                    Thread.sleep(1000);
+                    Message msg = new Message();
+                    msg.what = TIMEUPDATE;
+                    mHandler.sendMessage(msg);
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } while(true);
         }
     }
 

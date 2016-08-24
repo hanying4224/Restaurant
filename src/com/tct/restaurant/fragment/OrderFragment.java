@@ -33,6 +33,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -170,6 +171,8 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                 vHodler.plusImg = (ImageView) convertView.findViewById(R.id.plus_img);
                 vHodler.reduceImg = (ImageView) convertView.findViewById(R.id.reduce_img);
                 vHodler.numberTv = (TextView) convertView.findViewById(R.id.number);
+                vHodler.commentImg = (ImageView) convertView.findViewById(R.id.comment_img);
+                vHodler.comment_et = (EditText) convertView.findViewById(R.id.comment_tv);
                 convertView.setTag(vHodler);
             } else {
                 vHodler = (ViewHodler) convertView.getTag();
@@ -208,6 +211,27 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                     dialog2 = builder.create();
                     dialog2.setCanceledOnTouchOutside(false);
                     dialog2.show();
+                }
+            });
+            
+            vHodler.commentImg.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    vHodler.commentImg.setVisibility(View.GONE);
+                    vHodler.comment_et.setVisibility(View.VISIBLE);
+                }
+            });
+            
+            vHodler.hurryButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_hurryup, null);
+                    Button cancelBtn = (Button) view.findViewById(R.id.ok);
+                    cancelBtn.setOnClickListener(listener3);
+                    builder.setView(view);
+                    dialog3 = builder.create();
+                    dialog3.show();
                 }
             });
             
@@ -259,8 +283,9 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
             LinearLayout plus_reduce_layout;
             LinearLayout timeleft_layout;
             View lineview;
-            ImageView plusImg, reduceImg;
+            ImageView plusImg, reduceImg, commentImg;
             TextView numberTv;
+            EditText comment_et;
         }
     }
     
@@ -301,6 +326,21 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                 break;
             case R.id.cancel:
                 dialog2.cancel();
+                break;
+
+            default:
+                break;
+            }
+        }
+    };
+    
+    AlertDialog dialog3;
+    OnClickListener listener3 = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+            case R.id.ok:
+                dialog3.cancel();
                 break;
 
             default:

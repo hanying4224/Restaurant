@@ -31,8 +31,8 @@
                 android:gravity="center_vertical"
                 >
                 <ImageView 
-                    android:layout_width="15dp"
-                android:layout_height="15dp"
+                    android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/order"
                     />
             <Button
@@ -54,8 +54,8 @@
                 android:gravity="center_vertical"
                 >
                 <ImageView 
-                    android:layout_width="15dp"
-                android:layout_height="15dp"
+                    android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/pay"
                     />
             <Button
@@ -77,8 +77,8 @@
                 android:gravity="center_vertical"
                 >
                 <ImageView 
-                    android:layout_width="15dp"
-                android:layout_height="15dp"
+                    android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/entertainment"
                     />
             <Button
@@ -100,8 +100,8 @@
                 android:gravity="center_vertical"
                 >
                 <ImageView 
-                    android:layout_width="15dp"
-                android:layout_height="15dp"
+                    android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/nearby"
                     />
             <Button

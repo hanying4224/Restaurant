@@ -15,25 +15,25 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.Toast;
+import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.tct.restaurant.R;
-import com.tct.restaurant.activity.HomePageActivity;
-import com.tct.restaurant.activity.LoginActivity;
 import com.tct.restaurant.util.Constants;
 
 @SuppressLint("NewApi")
@@ -56,6 +56,9 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
             { Constants.FOODTYPE_SPECIAL, Constants.FOODTYPE_HOT, Constants.FOODTYPE_COLD, Constants.FOODTYPE_STAPLE, Constants.FOODTYPE_SOUP, Constants.FOODTYPE_DRINKS }
     };
 	private Context mContext;
+	private LinearLayout order_layout, pay_layout, amusement_layout, nearby_layout;
+	private ImageView order_img, pay_img, amusement_img, nearby_img;
+	ExpandableListView expandableListView;
 
 	public View getCurrentView() {
 		return currentView;
@@ -72,16 +75,38 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
 		bt_invitation = (Button) currentView.findViewById(R.id.btn_amusement);
 		bt_orders = (Button) currentView.findViewById(R.id.btn_order);
 		btn_nearby = (Button) currentView.findViewById(R.id.btn_nearby);
+		order_layout = (LinearLayout) currentView.findViewById(R.id.order_layout);
+		pay_layout = (LinearLayout) currentView.findViewById(R.id.pay_layout);
+		amusement_layout = (LinearLayout) currentView.findViewById(R.id.amusement_layout);
+		nearby_layout = (LinearLayout) currentView.findViewById(R.id.nearby_layout);
+		order_img = (ImageView) currentView.findViewById(R.id.order_img);
+		pay_img = (ImageView) currentView.findViewById(R.id.pay_img);
+		amusement_img = (ImageView) currentView.findViewById(R.id.amusement_img);
+		nearby_img = (ImageView) currentView.findViewById(R.id.nearby_img);
 		btn_nearby.setOnClickListener(this);
 		bt_gift.setOnClickListener(this);
 //		bt_home.setOnClickListener(this);
 		bt_invitation.setOnClickListener(this);
 		bt_orders.setOnClickListener(this);
 		mContext = getActivity();
-		ExpandableListView expandableListView = (ExpandableListView) currentView.findViewById(R.id.food_list);
+		expandableListView = (ExpandableListView) currentView.findViewById(R.id.food_list);
 		expandableListView.setAdapter(adapter);
 		expandableListView.setOnChildClickListener(onChildClickListener);
 		expandableListView.setGroupIndicator(null);
+		expandableListView.setOnGroupClickListener(new OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v,
+                    int groupPosition, long id) {
+                Log.d("ying", "onGroupClick");
+                menuItemClick(bt_orders, order_layout, false);
+                menuItemClick(bt_gift, pay_layout, false);
+                menuItemClick(bt_invitation, amusement_layout, false);
+                menuItemClick(btn_nearby, nearby_layout, false);
+                menuIconClick(-1);
+                
+                return false;
+            }
+        });
 		return currentView;
 	}
 	
@@ -90,10 +115,6 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         public boolean onChildClick(ExpandableListView parent, View v,
                 int groupPosition, int childPosition, long id) {
             FragmentTransaction ft = getFragmentManager().beginTransaction();// 开始一个事物
-            /*Toast.makeText(
-                    mContext,
-                    "你点击了" + adapter.getChild(groupPosition, childPosition),
-                    Toast.LENGTH_SHORT).show();*/
             Fragment homeFragment = new HomeFragment(adapter.getChild(groupPosition, childPosition).toString());
             ft.replace(R.id.slidingpane_content, homeFragment);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -149,12 +170,16 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded,
                 View convertView, ViewGroup parent) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.food_group_view, null);
+            if (isExpanded) {
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.food_group_view_expand, null);
+            } else {
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.food_group_view, null);
+            }
             return convertView;
         }
 
         @Override
-        public View getChildView(int groupPosition, int childPosition,
+        public View getChildView(final int groupPosition, final int childPosition,
                 boolean isLastChild, View convertView, ViewGroup parent) {
             TextView textView = new TextView(mContext);
             textView.setText(getChild(groupPosition, childPosition).toString());
@@ -176,8 +201,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
 	@SuppressLint("CommitTransaction")
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		
+	    expandableListView.collapseGroup(0);
 		FragmentTransaction ft = getFragmentManager().beginTransaction();// 开始一个事物
 		switch (v.getId()) {
 		/*case R.id.btn_home:
@@ -187,24 +211,44 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
 			ft.commit();
 			break;*/
 		case R.id.btn_order:
+		    menuIconClick(0);
+		    menuItemClick(bt_orders, order_layout, true);
+		    menuItemClick(bt_gift, pay_layout, false);
+		    menuItemClick(bt_invitation, amusement_layout, false);
+		    menuItemClick(btn_nearby, nearby_layout, false);
 			Fragment orderFragment = new OrderFragment();
 			ft.replace(R.id.slidingpane_content, orderFragment);
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			ft.commit();
 			break;
 		case R.id.btn_pay:
+		    menuIconClick(1);
+		    menuItemClick(bt_orders, order_layout, false);
+            menuItemClick(bt_gift, pay_layout, true);
+            menuItemClick(bt_invitation, amusement_layout, false);
+            menuItemClick(btn_nearby, nearby_layout, false);
 			Fragment giftFragment = new PayFragment();
 			ft.replace(R.id.slidingpane_content, giftFragment);
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			ft.commit();
 			break;
 		case R.id.btn_amusement:
+		    menuIconClick(2);
+		    menuItemClick(bt_orders, order_layout, false);
+            menuItemClick(bt_gift, pay_layout, false);
+            menuItemClick(bt_invitation, amusement_layout, true);
+            menuItemClick(btn_nearby, nearby_layout, false);
 			Fragment invitationFragment = new AmusementFragment();
 			ft.replace(R.id.slidingpane_content, invitationFragment);
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			ft.commit();
 			break;
 		case R.id.btn_nearby:
+		    menuIconClick(3);
+		    menuItemClick(bt_orders, order_layout, false);
+            menuItemClick(bt_gift, pay_layout, false);
+            menuItemClick(bt_invitation, amusement_layout, false);
+            menuItemClick(btn_nearby, nearby_layout, true);
             Fragment nearbyFragment = new NearbyFragment();
             ft.replace(R.id.slidingpane_content, nearbyFragment);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -212,5 +256,45 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
             break;
 		}
 //		((HomePageActivity) getActivity()).getSlidingPaneLayout().closePane();
+	}
+	
+	private void menuItemClick(Button btn, LinearLayout layout, boolean highLight) {
+	    Resources r = mContext.getResources();
+	    if (highLight) {
+            btn.setTextColor(r.getColor(R.color.tct_yellow));
+            layout.setBackgroundColor(r.getColor(R.color.tct_gray_bg));
+        } else {
+            btn.setTextColor(r.getColor(R.color.tct_black));
+            layout.setBackgroundColor(r.getColor(R.color.tct_white));
+        }
+	}
+	
+	private void menuIconClick(int i) {
+	    if (i== 0) {//订单
+            order_img.setImageResource(R.drawable.order_selected);
+            pay_img.setImageResource(R.drawable.pay);
+            amusement_img.setImageResource(R.drawable.entertainment);
+            nearby_img.setImageResource(R.drawable.nearby);
+        } else if (i == 1) {
+            order_img.setImageResource(R.drawable.order);
+            pay_img.setImageResource(R.drawable.pay_selected);
+            amusement_img.setImageResource(R.drawable.entertainment);
+            nearby_img.setImageResource(R.drawable.nearby);
+        } else if (i == 2) {
+            order_img.setImageResource(R.drawable.order);
+            pay_img.setImageResource(R.drawable.pay);
+            amusement_img.setImageResource(R.drawable.entertainment_selected);
+            nearby_img.setImageResource(R.drawable.nearby);
+        } else if (i == 3) {
+            order_img.setImageResource(R.drawable.order);
+            pay_img.setImageResource(R.drawable.pay);
+            amusement_img.setImageResource(R.drawable.entertainment);
+            nearby_img.setImageResource(R.drawable.nearby_selected);
+        } else if (i == -1) {
+            order_img.setImageResource(R.drawable.order);
+            pay_img.setImageResource(R.drawable.pay);
+            amusement_img.setImageResource(R.drawable.entertainment);
+            nearby_img.setImageResource(R.drawable.nearby);
+        }
 	}
 }

@@ -112,6 +112,10 @@ public class HomePageActivity extends Activity implements OnClickListener{
 	public SlidingPaneLayout getSlidingPaneLayout() {
 		return slidingPaneLayout;
 	}
+	
+	public MenuFragment getMenuFragment() {
+	    return menuFragment;
+	}
 
 	@Override
     public void onClick(View v) {

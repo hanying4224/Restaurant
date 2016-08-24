@@ -11,14 +11,14 @@
         android:id="@+id/food_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/food" >
+        android:src="@drawable/food_selected" >
     </ImageView>
     
     <TextView 
         android:id="@+id/btn_food"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/tct_black"
+        android:textColor="@color/tct_yellow"
         android:layout_marginLeft="10dp"
         android:textSize="18sp"
         android:text="点餐"
@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:src="@drawable/sanjiao_balck" >
+        android:src="@drawable/sanjiao_yellow" >
     </ImageView>
 
 </LinearLayout>

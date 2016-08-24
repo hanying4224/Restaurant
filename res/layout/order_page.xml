@@ -22,7 +22,7 @@
            android:paddingRight="25dp"
            android:paddingTop="10dp"
            android:paddingBottom="10dp"
-           android:background="@color/tct_gray"
+           android:background="@color/tct_yellow"
            android:textColor="@color/tct_darkyellow_text"
            android:text="待下单"
            />
@@ -149,7 +149,7 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:textSize="20sp"
-           android:text="    合计："
+           android:text="       合计："
            />
        <TextView 
            android:layout_width="wrap_content"
@@ -164,6 +164,7 @@
            android:layout_weight="1"
            />
        <TextView 
+           android:id="@+id/go_pay"
            android:layout_width="270px"
            android:layout_height="90px"
            android:background="@color/tct_yellow"

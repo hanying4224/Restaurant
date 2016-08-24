@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="10dp"
     android:background="@android:color/white" >
 
 
@@ -21,16 +20,19 @@
                 android:drawableLeft="@drawable/home_menu_home_icon"
                 android:childDivider="@android:color/transparent"
                 android:cacheColorHint="#00000000"
-                android:listSelector="#00000000">
+                android:listSelector="@color/tct_gray_bg">
             </ExpandableListView>
 
             <LinearLayout 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:id="@+id/order_layout"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 >
                 <ImageView 
+                    android:id="@+id/order_img"
                     android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/order"
@@ -48,12 +50,15 @@
             </LinearLayout>
             
             <LinearLayout 
+                android:id="@+id/pay_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 >
                 <ImageView 
+                    android:id="@+id/pay_img"
                     android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/pay"
@@ -71,12 +76,15 @@
             </LinearLayout>
             
             <LinearLayout 
+                android:id="@+id/amusement_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 >
                 <ImageView 
+                    android:id="@+id/amusement_img"
                     android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/entertainment"
@@ -94,12 +102,15 @@
             </LinearLayout>
             
             <LinearLayout 
+                android:id="@+id/nearby_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 >
                 <ImageView 
+                    android:id="@+id/nearby_img"
                     android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/nearby"

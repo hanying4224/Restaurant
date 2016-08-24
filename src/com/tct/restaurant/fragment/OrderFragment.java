@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -40,6 +41,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tct.restaurant.R;
+import com.tct.restaurant.activity.HomePageActivity;
 import com.tct.restaurant.entity.FoodEntity;
 import com.tct.restaurant.entity.OrderItem;
 import com.tct.restaurant.util.Constants;
@@ -51,7 +53,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
 	private ListView listView;
 	private OrderAdapter adapter;
 	private Context mContext;
-	private TextView orderedTV, unorderedTV;
+	private TextView orderedTV, unorderedTV, goPay;
 	/** 0:已下单列表。 1:待下单列表。 **/
 	int current_tag = 1;
 	private LinearLayout bottom1Layout;
@@ -93,8 +95,10 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
 	    bottom2Layout = (LinearLayout) currentView.findViewById(R.id.bottom2);
 	    orderedTV = (TextView) currentView.findViewById(R.id.ordered_page);
 	    unorderedTV = (TextView) currentView.findViewById(R.id.unorder_page);
+	    goPay = (TextView) currentView.findViewById(R.id.go_pay);
 	    orderedTV.setOnClickListener(this);
 	    unorderedTV.setOnClickListener(this);
+	    goPay.setOnClickListener(this);
 	    
 	    listView = (ListView) currentView.findViewById(R.id.order_list);
 	    adapter = new OrderAdapter();
@@ -312,7 +316,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
             current_tag = 0;
             bottom1Layout.setVisibility(View.GONE);
             bottom2Layout.setVisibility(View.VISIBLE);
-            orderedTV.setBackgroundColor(getResources().getColor(R.color.tct_gray));
+            orderedTV.setBackgroundColor(getResources().getColor(R.color.tct_yellow));
             unorderedTV.setBackgroundColor(getResources().getColor(R.color.tct_lightgray_text));
             RequestUtils.getUserOrderList(Constants.USER_ID, mHandler);
             break;
@@ -321,8 +325,16 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
             bottom1Layout.setVisibility(View.VISIBLE);
             bottom2Layout.setVisibility(View.GONE);
             orderedTV.setBackgroundColor(getResources().getColor(R.color.tct_lightgray_text));
-            unorderedTV.setBackgroundColor(getResources().getColor(R.color.tct_gray));
+            unorderedTV.setBackgroundColor(getResources().getColor(R.color.tct_yellow));
             RequestUtils.getUserUnOrderList(Constants.USER_ID, mHandler);
+            break;
+        case R.id.go_pay:
+            Log.d("ying", "pay************88");
+            HomePageActivity activity = (HomePageActivity) getActivity();
+            Button btn_pay = (Button) activity.getMenuFragment().getCurrentView().findViewById(R.id.btn_pay);
+            MenuFragment menuFragment = activity.getMenuFragment();
+            menuFragment.onClick(btn_pay);
+//            btn_pay.setPressed(true);
             break;
 
         default:

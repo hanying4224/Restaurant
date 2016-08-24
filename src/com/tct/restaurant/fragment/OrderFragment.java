@@ -192,8 +192,11 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                 vHodler.timeleft_layout.setVisibility(View.GONE);
                 vHodler.numberTv.setText(unorderList.get(position).getNum());
             }
-            vHodler.title.setText(fEntity.getName());
-            vHodler.price.setText("¥" + fEntity.getPrice());
+            if (fEntity!=null) {
+                vHodler.title.setText(fEntity.getName());
+                vHodler.price.setText("¥" + fEntity.getPrice());
+                ImageLoader.getInstance().displayImage(fEntity.getImage(), vHodler.imageV);
+            }
             vHodler.delButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -270,7 +273,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                 }
             });
 
-            ImageLoader.getInstance().displayImage(fEntity.getImage(), vHodler.imageV);
+            
             return convertView;
         }
 

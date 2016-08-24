@@ -45,11 +45,11 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="A112"
-        android:textColor="#F8A525"
-        android:textSize="20sp" />
+        android:textColor="@color/tct_yellow"
+        android:textSize="27sp" />
 
     <LinearLayout
-        android:id="@+id/top_panel_back"
+        android:id="@+id/top_panel_right"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"

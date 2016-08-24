@@ -44,7 +44,7 @@
 		            android:id="@+id/foodorder_text"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:textSize="16sp"
+		            android:textSize="15sp"
 	                android:text="多人点餐" />
 	        </LinearLayout>
 	        <LinearLayout
@@ -53,13 +53,14 @@
 	            android:layout_height="35dp"
 	            android:layout_marginRight="25dp"
 	            android:gravity="center"
-                android:background="@color/tct_white">
+                android:background="@color/tct_yellow">
 		        <TextView
 		            android:id="@+id/foodsales_text"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:drawableRight="@drawable/rank_black"
-		            android:textSize="16sp"
+		            android:drawableRight="@drawable/rank_white"
+		            android:textColor="@color/tct_white"
+		            android:textSize="15sp"
 		            android:drawablePadding="2dp"
 		            android:text="销量" />
 	        </LinearLayout>
@@ -74,7 +75,7 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:drawableRight="@drawable/rank_black"
-		            android:textSize="16sp"
+		            android:textSize="15sp"
 		            android:drawablePadding="2dp"
 		            android:text="评价" />
 	        </LinearLayout>

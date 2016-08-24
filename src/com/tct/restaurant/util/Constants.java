@@ -25,7 +25,7 @@ public class Constants {
 	public static final String BASE_IMAGE_CACHE = BASE_PATH + "cache/images/";
 
 	//HTTP 相关
-	private static String IP = "http://10.128.210.67";//117
+	private static String IP = "http://192.168.1.202";//10.128.210.67
 	public static final String SERVER_IP = IP + "/restaurant/Service1.asmx";
 	public static final String PIC_IP = IP + "/restaurant/pic/";
 	public static final String TABLE_QUERY = "/tableQuery";

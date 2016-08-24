@@ -43,12 +43,12 @@ public class HomePageActivity extends Activity implements OnClickListener{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
-//		this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
-//		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//去掉信息栏
-		/*Window window = getWindow();
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//去掉信息栏
+		Window window = getWindow();
 		WindowManager.LayoutParams params = window.getAttributes();
-        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-        window.setAttributes(params);  */
+        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        window.setAttributes(params);
 //		View main = getLayoutInflater().from(this).inflate(R.layout.slidingpane_main_layout, null);
 //		main.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);

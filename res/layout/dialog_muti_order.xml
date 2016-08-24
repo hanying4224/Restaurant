@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical">
+    
+    <TextView 
+        android:id="@+id/dialog_text"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:text="扫描二维码\n支持多人点餐"
+        android:textSize="20sp"
+        android:textColor="@color/tct_white"
+        android:background="@color/tct_yellow"/>
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="57.5dp"
+        android:layout_marginLeft="60dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/erweima" />
+    <TextView 
+        android:id="@+id/dialog_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        android:text="取消"
+        android:textSize="20sp"
+        android:textColor="@color/tct_black"
+        />
+</LinearLayout>

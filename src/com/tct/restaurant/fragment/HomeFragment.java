@@ -28,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.BaseAdapter;
@@ -46,17 +47,20 @@ import com.tct.restaurant.util.RequestUtils;
 
 @SuppressLint({ "NewApi", "ValidFragment" })
 public class HomeFragment extends Fragment {
+    private Context mContext;
     private View currentView;
     private GridView foodGridView = null;
     private List<FoodEntity> foodEntityList = new ArrayList<FoodEntity>();
     private String mFoodType = "热菜类";
     private GridViewAdapter gridAdapter = null;
+    private View foodMutiOrder;
     private View sortBySales;
     private View sortByScore;
     private TextView sortBySalesTextView;
     private TextView sortByScoreTextView;
     private Drawable drawableWhite;
     private Drawable drawableBlack;
+    private AlertDialog dialog;
 
     public void setCurrentViewPararms(FrameLayout.LayoutParams layoutParams) {
         currentView.setLayoutParams(layoutParams);
@@ -92,11 +96,14 @@ public class HomeFragment extends Fragment {
             Bundle savedInstanceState) {
         Log.i("hao", "HomeFragment onCreateView begin.. ");
         // TODO Auto-generated method stub
+        mContext = getActivity();
         gridAdapter = new GridViewAdapter(getActivity());
         currentView = inflater.inflate(R.layout.slidingpane_home_layout,
                 container, false);
         TextView foodtype = (TextView) currentView.findViewById(R.id.foodmenutype);
         foodtype.setText(mFoodType);
+        foodMutiOrder = currentView.findViewById(R.id.foodorder);
+        foodMutiOrder.setOnClickListener(mClickListener);
         sortBySales = currentView.findViewById(R.id.foodsales);
         sortBySales.setOnClickListener(mClickListener);
         sortByScore = currentView.findViewById(R.id.foodscore);
@@ -124,6 +131,27 @@ public class HomeFragment extends Fragment {
         public void onClick(View v) {
             // TODO Auto-generated method stub
             switch (v.getId()) {
+            case R.id.foodorder:
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_muti_order, null);
+                TextView tv =  (TextView) view.findViewById(R.id.dialog_cancel);
+                tv.setOnClickListener(mClickListener);
+                builder.setView(view);
+                dialog = builder.create();
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+                
+                dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//去掉信息栏
+              //一定得在show完dialog后来set属性  
+                WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();  
+                lp.width = 600; 
+                lp.height = 850;  
+                lp.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                dialog.getWindow().setAttributes(lp);
+                break;
+            case R.id.dialog_cancel:
+                dialog.cancel();
+                break;
             case R.id.foodsales:
                 sortBySales.setBackgroundColor(getResources().getColor(R.color.tct_yellow));
                 sortByScore.setBackgroundColor(getResources().getColor(R.color.tct_white));

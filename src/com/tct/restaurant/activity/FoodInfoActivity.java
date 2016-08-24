@@ -58,6 +58,7 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
     private TextView foodEvaluation2;
     private TextView foodNocommentsView;
     private ImageView foodPicView;
+    private ImageView foodCommentBackView;
     private Button foodAddBt;
     private RatingBar rb;
     private View detailBackView;//detail_back
@@ -127,6 +128,7 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
         foodType = (TextView) findViewById(R.id.detail_food_type);
         foodPicView = (ImageView) findViewById(R.id.food_pic);
         detailBackView = findViewById(R.id.top_panel_back);
+        detailBackView.setVisibility(View.VISIBLE);
         detailBackView.setOnClickListener(this);
         foodName = (TextView) findViewById(R.id.food_name);
         foodPrice = (TextView) findViewById(R.id.food_price);
@@ -156,7 +158,8 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
         commentsListView = (ListView) findViewById(R.id.comments_list);
         commentsListView.setAdapter(mCommentsAdapter);
         foodNocommentsView = (TextView) findViewById(R.id.food_comment_empty);
-
+        foodCommentBackView = (ImageView) findViewById(R.id.food_comment_back);
+        foodCommentBackView.setOnClickListener(this);
         // TODO Auto-generated method stub
         foodList_Current = RequestUtils.foodList_Current;
         for (int i = 0; i < foodList_Current.size(); i++) {
@@ -217,6 +220,25 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
             break;
+        case R.id.food_comment_back:
+            Log.i("hao", "comments click back.. ");
+            if (mainContentRight.getVisibility()==View.GONE && mainContentRightComments.getVisibility()==View.VISIBLE) {
+                mainContentRight.setVisibility(View.VISIBLE);
+                mainContentRightComments.setVisibility(View.GONE);
+            } else {
+                new Thread(){
+                    public void run() {
+                        try{
+                            Instrumentation inst = new Instrumentation();
+                            inst.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);
+                        }
+                        catch (Exception e) {
+                            Log.e("Exception when onBack", e.toString());
+                        }
+                    }
+                }.start();
+            }
+            break;
         case R.id.top_panel_back:
             Log.i("hao", "HomeFragment click back.. ");
             if (mainContentRight.getVisibility()==View.GONE && mainContentRightComments.getVisibility()==View.VISIBLE) {
@@ -234,6 +256,7 @@ public class FoodInfoActivity extends Activity implements OnClickListener{
                         }
                     }
                 }.start();
+                detailBackView.setVisibility(View.GONE);
             }
             break;
         case R.id.food_comment_num:

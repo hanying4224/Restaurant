@@ -5,17 +5,17 @@
     android:background="@color/tct_white" >
 
     <LinearLayout
-        android:id="@+id/top_panel_back"
+        android:id="@+id/top_panel_left"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true" >
+        android:layout_alignParentLeft="true">
 
         <LinearLayout
             android:id="@+id/top_panel_back"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:gravity="center" >
+            android:gravity="center" 
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/top_panel_back_pic"

@@ -98,6 +98,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="25dp"/>
         <Button
+            android:id="@+id/pay_confirm"
             android:layout_width="100dp"
             android:layout_height="35dp"
             android:layout_marginTop="25dp"
@@ -116,10 +117,124 @@
 
     </LinearLayout>
     
+    <!-- pay complete -->
+    
+    <LinearLayout 
+        android:id="@+id/pay_complete_layout"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="240dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="@color/tct_white"
+        android:visibility="gone">
+        
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:src="@drawable/pay_completed"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="支付完成"
+            android:textSize="20sp"
+            android:textColor="@color/tct_yellow" />
+        <TextView
+            android:id="@+id/pay_print_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="自助打印发票"
+            android:textSize="16sp"/>
+    </LinearLayout>
+    
     <ImageView
+        android:id="@+id/juice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="100dp"
         android:src="@drawable/juice" />
+
+    <!-- title -->
+    <LinearLayout 
+        android:id="@+id/pay_title_layout"
+        android:layout_width="640dp"
+        android:layout_height="400dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="75dp"
+        android:orientation="vertical"
+        android:background="@color/tct_white"
+        android:visibility="gone">
+        
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:background="@color/tct_yellow">
+            <TextView
+	            android:layout_width="100dp"
+	            android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:text="打印发票"
+	            android:textSize="24sp"
+	            android:textColor="@color/tct_white" />
+	        <TextView
+	            android:layout_width="100dp"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="220dp"
+	            android:gravity="center"
+	            android:text="电子发票"
+	            android:textSize="24sp"
+	            android:textColor="@color/tct_lightgray_text"/>
+        </LinearLayout>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="46dp"
+                android:layout_marginLeft="77dp"
+                android:text="发票类型： 餐饮发票"
+                android:textSize="18sp"
+                android:textColor="@color/tct_black" />
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="77dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="发票抬头： "
+                android:textSize="18sp"
+                android:textColor="@color/tct_black" />
+            <EditText
+                android:layout_width="310dp"
+                android:layout_height="38dp"
+                android:textSize="18sp"
+                android:textColor="@color/tct_lightgray_text"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="77dp"
+            android:text="已连接打印机，已打印"
+            android:textSize="14sp"
+            android:textColor="@color/tct_lightgray_text" />
+        <TextView
+            android:layout_width="145dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:layout_marginTop="70dp"
+            android:text="打印"
+            android:textSize="18sp"
+            android:textColor="@color/tct_white"
+            android:background="@color/tct_yellow" />
+        
+    </LinearLayout>
 </RelativeLayout>

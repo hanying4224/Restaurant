@@ -19,7 +19,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.FrameLayout.LayoutParams;
@@ -31,9 +33,13 @@ public class PayFragment extends Fragment implements OnClickListener{
 	private View currentView;
 	private View payErweimaLayout;
 	private View payTuanLayout;
+	private View payCompleteLayout;
+	private View payTitleLayout;
+	private ImageView juiceView;
 	private TextView payErweimaTextView;
 	private TextView payTuanTextView;
-	
+	private TextView payPrintTilteTextView;
+	private Button payConfirmBt;
 
 	public void setCurrentViewPararms(FrameLayout.LayoutParams layoutParams) {
 		currentView.setLayoutParams(layoutParams);
@@ -51,11 +57,17 @@ public class PayFragment extends Fragment implements OnClickListener{
 				container, false);
 		payErweimaLayout = currentView.findViewById(R.id.pay_erweima_layout);
 		payTuanLayout = currentView.findViewById(R.id.pay_tuan_layout);
+		payCompleteLayout = currentView.findViewById(R.id.pay_complete_layout);
+		payTitleLayout = currentView.findViewById(R.id.pay_title_layout);
+		juiceView = (ImageView) currentView.findViewById(R.id.juice);
 		payErweimaTextView = (TextView) currentView.findViewById(R.id.pay_erweima);
 		payErweimaTextView.setOnClickListener(this);
 		payTuanTextView = (TextView) currentView.findViewById(R.id.pay_tuan);
 		payTuanTextView.setOnClickListener(this);
-		
+		payConfirmBt = (Button) currentView.findViewById(R.id.pay_confirm);
+		payConfirmBt.setOnClickListener(this);
+		payPrintTilteTextView = (TextView) currentView.findViewById(R.id.pay_print_title);
+		payPrintTilteTextView.setOnClickListener(this);
 		return currentView;
 	}
 
@@ -66,10 +78,24 @@ public class PayFragment extends Fragment implements OnClickListener{
         case R.id.pay_erweima:
             payErweimaLayout.setVisibility(View.VISIBLE);
             payTuanLayout.setVisibility(View.GONE);
+            payCompleteLayout.setVisibility(View.GONE);
             break;
         case R.id.pay_tuan:
             payErweimaLayout.setVisibility(View.GONE);
             payTuanLayout.setVisibility(View.VISIBLE);
+            payCompleteLayout.setVisibility(View.GONE);
+            break;
+        case R.id.pay_confirm:
+            payErweimaLayout.setVisibility(View.GONE);
+            payTuanLayout.setVisibility(View.GONE);
+            payCompleteLayout.setVisibility(View.VISIBLE);
+            break;
+        case R.id.pay_print_title:
+            payErweimaLayout.setVisibility(View.GONE);
+            payTuanLayout.setVisibility(View.GONE);
+            payCompleteLayout.setVisibility(View.GONE);
+            juiceView.setVisibility(View.GONE);
+            payTitleLayout.setVisibility(View.VISIBLE);
             break;
         default:
             break;
